@@ -1,0 +1,62 @@
+.notify {
+  .notify__header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &-left{
+      display: flex;
+      align-items: center;
+      .notify__bell{
+        padding: 0px 10px;
+      }
+      .notify__title{
+        padding: 5px 10px;
+      }
+    }
+  }
+
+  .notify__content{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    .notify__box{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .notify-icon{
+        display: flex;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: antiquewhite;
+        justify-content: center;
+        align-items: center;
+      }
+      .notify-detail{
+        flex: 1;
+        margin-left: 20px;
+        h4{
+          margin: 0;
+        }
+        .notify-time{
+          margin: 0;
+        }
+      }
+    }
+  }
+  .ant-dropdown-menu{
+    width: 400px;
+    height: 400px;
+    overflow-y: auto;
+  }
+
+  .ant-dropdown-menu-item-divider{
+    margin: 0 !important;
+  }
+  .ant-dropdown-menu-item:nth-child(1):hover {
+    background-color: transparent; /* Ghi đè màu nền khi hover */
+    color: inherit; /* Ghi đè màu chữ khi hover, nếu cần */
+    cursor: default;
+  }
+
+}

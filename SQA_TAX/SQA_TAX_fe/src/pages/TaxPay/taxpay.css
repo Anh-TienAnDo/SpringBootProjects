@@ -1,0 +1,71 @@
+.layout-taxpay__header{
+  width: 100%;
+  height: auto;
+  padding-left: 25px;
+  background-color: #fff;
+}
+/* header__taxpay */
+.header__taxpay{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+/* header__tax */
+.header__tax-code{
+  width: 100%;
+  display: flex;
+  margin-top: 20px;
+  align-items: center;
+}
+
+.header__tax-number{
+  margin-left: 20px;
+}
+
+/* header__cccd */
+.header__cccd-code{
+  width: 100%;
+  display: flex;
+  margin-top: 28px;
+  align-items: center;
+}
+
+.header__search{
+  display: inline-block;
+  margin-left: 15px;
+}
+
+.header__title{
+  display: flex;
+  text-align: center;
+  align-items: center;
+}
+
+.header__cccd-number{
+  margin-left: 20px;
+}
+
+/* header-infor-table */
+.header__infor-taxer{
+  padding-left: 25px;
+  background-color: #fff;
+}
+
+.header__table-payer-infor {
+  width: 39.5%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+td, th {
+  border: 1px solid #ddd;
+  text-align: left;
+  padding: 8px;
+}
+th {
+  background-color: #f2f2f2;
+}
+td:nth-child(2) {
+  font-style: italic;
+}
+

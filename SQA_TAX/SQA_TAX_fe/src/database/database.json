@@ -1,0 +1,94 @@
+{
+  "category-tax": [
+    {
+      "name": "thue thu nhap ca nhan"
+    },
+    {
+      "name": "thue thu nhap bất động sản"
+    }
+  ],
+  "tax-payer": [
+    {
+      "mst": "10000000001",
+      "CCCD": "100000000000",
+      "hoVaTen": "Trần Thị B",
+      "ngaySinh": "02/02/1985",
+      "gioiTinh": "Nữ",
+      "dchk_tinhThanhPho": "TP Hồ Chí Minh",
+      "dchk_QuanHuyen": "Quận 1",
+      "sdt": "0912345678"
+    },
+    {
+      "mst": "112233445",
+      "CCCD": "987654321",
+      "hoVaTen": "Ngô Văn C",
+      "ngaySinh": "15/05/1990",
+      "gioiTinh": "Nam",
+      "dchk_tinhThanhPho": "Đà Nẵng",
+      "dchk_QuanHuyen": "Hải Châu",
+      "sdt": "0923456789"
+    }
+  ],
+  "unpaid-tax": [
+    {
+      "id": 1,
+      "tenLoaiToKhai": "thue thu nhap ca nhan",
+      "mst": "123456789",
+      "thuNhapChiuThue": 50000000,
+      "thuNhapDuocMienGiam": 10000000,
+      "khauTruChoBanThan": 9000000,
+      "khauTruNguoiPhuThuoc": 3600000,
+      "khauTruChoTuThien": 2000000,
+      "khauTruChoBaoHiem": 5000000,
+      "cuTru": true,
+      "tongThuePhaiNop": 5000000,
+      "tuNgay": "2023-01-01",
+      "denNgay": "2023-12-31"
+    },
+    {
+      "id": 2,
+      "tenLoaiToKhai": "thue thu nhap bất động sản",
+      "mst": "123456789",
+      "thuNhapChiuThue": 50000000,
+      "thuNhapDuocMienGiam": 10000000,
+      "khauTruChoBanThan": 9000000,
+      "khauTruNguoiPhuThuoc": 3600000,
+      "khauTruChoTuThien": 2000000,
+      "khauTruChoBaoHiem": 5000000,
+      "cuTru": true,
+      "tongThuePhaiNop": 5000000,
+      "tuNgay": "2023-01-01",
+      "denNgay": "2023-12-31"
+    },
+    {
+      "id": 3,
+      "tenLoaiToKhai": "thue thu nhap bất động sản",
+      "mst": "123456789",
+      "thuNhapChiuThue": 50000000,
+      "thuNhapDuocMienGiam": 10000000,
+      "khauTruChoBanThan": 9000000,
+      "khauTruNguoiPhuThuoc": 3600000,
+      "khauTruChoTuThien": 2000000,
+      "khauTruChoBaoHiem": 5000000,
+      "cuTru": true,
+      "tongThuePhaiNop": 5000000,
+      "tuNgay": "2023-01-01",
+      "denNgay": "2023-12-31"
+    },
+    {
+      "id": 4,
+      "tenLoaiToKhai": "thue thu nhap bất động sản",
+      "mst": "123456789",
+      "thuNhapChiuThue": 50000000,
+      "thuNhapDuocMienGiam": 10000000,
+      "khauTruChoBanThan": 9000000,
+      "khauTruNguoiPhuThuoc": 3600000,
+      "khauTruChoTuThien": 2000000,
+      "khauTruChoBaoHiem": 5000000,
+      "cuTru": true,
+      "tongThuePhaiNop": 5000000,
+      "tuNgay": "2023-01-01",
+      "denNgay": "2023-12-31"
+    }
+  ]
+}

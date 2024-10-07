@@ -1,0 +1,37 @@
+Phím tắt			Chức năng
+Alt + Up/Down		Di chuyển dòng hiện tại hoặc vùng được chọn lên / xuống.
+Ctrl + Alt + Up/Down	Tạo dòng hiện tại hoặc vùng được chọn lên / xuống.
+Ctrl + Shift + F		Tự động format text được chọn theo code formatter.
+Ctrl + Shift + /		Block comment vùng chọn (thêm '/*...*/".
+Ctrl + Shift + \		Xóa block comment.
+Ctrl + Shift + S		Lưu tất cả các file.
+Ctrl + Space		Hiển thị gợi ý code.
+Ctrl + O			Hiển thị cấu trúc code (code outline).
+Ctrl + Shift + O		Xóa import thừa, tự động thêm import thiếu.
+
+Ctrl + E	di chuyển qua các file
+Ctrl + Z	Khôi phục hành động trước.
+Ctrl + Y	Làm lại hành động trước
+Ctrl + C 	copy
+Ctrl + D	Xóa dòng hiện tại.
+Ctrl + V	paste.
+Ctrl + F	Mở hộp thoại search và replace.
+
+Ctrl + N			Tạo một project mới.
+Alt + F			Mở project, file.
+Ctrl + S			Lưu file hiện tại.
+Ctrl + W			Đóng file hiện tại.
+Ctrl + Shift + W		Đóng tất cả các file.
+F2				Mở thông tin lớp, phương thức, biến (dưới dạng tooltip).
+F3				Mở khai báo của lớp, phương thức, biến, tham số được chọn.
+Ctrl + Shift + F11	Lưu và Chạy project đang được chọn.
+Ctrl + Shift + G		Tìm kiếm vị trí được sử dụng của biến, phương thức, lớp được chọn.
+
+
+
+Tạo Setter và Getter cho một biến của một lớp trong Eclipse.
+Tiếp theo, Nhấp chuột phải vào con trỏ nằm bên trong một lớp, Nó hiển thị menu ngữ cảnh.
+Chọn Source mục menu ngữ cảnh
+Nó bật lên menu phụ và chọnGenerate Getters and Setters
+Nó mở cửa sổ và chọn các biến mà bạn muốn tạo
+Nó tạo ra những điều sau đây

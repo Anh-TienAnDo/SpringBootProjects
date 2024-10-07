@@ -1,0 +1,51 @@
+.layout-default .header {
+  height: 100px;
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.layout-default .header__menu-fold {
+  background-color: #fff;
+}
+.layout-default .header__logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 280px;
+  background-color: aqua;
+}
+.layout-default .header__logo-collapsed {
+  width: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+.layout-default .header__nav {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.layout-default .header__nav-left {
+  display: flex;
+  font-size: 20px;
+}
+.layout-default .header__nav-left .header__collapse {
+  padding: 10px 10px 10px 23px;
+}
+.layout-default .header__nav-left .header__search {
+  padding: 10px 10px 10px 15px;
+}
+.layout-default .header__nav-right {
+  align-items: center;
+  display: flex;
+  font-size: 20px;
+}
+.layout-default .header__nav-right .header__bell {
+  padding: 10px 10px 10px 15px;
+}
+.layout-default .header__nav-right .header__app-store {
+  padding: 10px 30px 10px 15px;
+}
