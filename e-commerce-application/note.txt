@@ -21,3 +21,24 @@ Controller Method Execution:
 
 Sau khi đối tượng UserDTO được tạo và dữ liệu được gán vào, đối tượng này sẽ được truyền vào phương thức createUser.
 Bạn có thể sử dụng đối tượng userDTO trong phương thức để xử lý dữ liệu, như lưu vào cơ sở dữ liệu, kiểm tra tính hợp lệ, v.v.
+
+
+-------------------------
+port 8080
+api/media-socials/
+    detail/{slug}
+    filter/
+    GET /api/media-socials/?_query=abc&_start=0&_limit=12_type=...
+    search-filter/
+api/categories/
+api/authors/
+api/producers/
+
+Response({
+            'status': 'Success',
+            'message': 'Data retrieved successfully',
+            'data': data
+            'total': total,
+
+        })  
+

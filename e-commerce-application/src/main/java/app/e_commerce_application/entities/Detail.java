@@ -1,9 +1,12 @@
 package app.e_commerce_application.entities;
-import org.springframework.data.mongodb.core.mapping.DBRef;
+// import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import jakarta.persistence.Entity;
 
 import java.util.List;
 
+@Entity
 public class Detail {
     private String author;
 

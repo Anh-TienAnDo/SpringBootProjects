@@ -1,5 +1,4 @@
 package app.e_commerce_application.payloads;
-import java.util.List;
 
 import app.e_commerce_application.entities.MediaSocial;
 import lombok.AllArgsConstructor;
@@ -9,20 +8,19 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MediaSocialsResponse {
-    private List<MediaSocial> data;
+public class MediaSocialResponse {
+    private MediaSocial data;
     private String status; // true if the request was successful, false otherwise
-    private Long total_elements; // total number of elements in DB
-    private String message = ""; // message to show to the user
+    private String message; // message to show to the user
+    // private Object object;
 
-    public void setMediaSocialsResposeSuccess(List<MediaSocial> data, Long total_elements, String message) {
+    public void setMediaSocialResposeSuccess(MediaSocial data, String message) {
         this.data = data;
         this.status = "Success";
-        this.total_elements = total_elements;
         this.message = message;
     }
 
-    public void setMediaSocialsResposeFail(String message) {
+    public void setMediaSocialResposeFail(String message) {
         this.status = "Fail";
         this.message = message;
     }

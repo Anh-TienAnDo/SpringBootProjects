@@ -5,10 +5,17 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import app.e_commerce_application.helper.ConvertVietnameseToNormalText;
+import jakarta.persistence.Entity;
+
 import java.util.Date;
 
+@Entity
 @Document(collection = "authors")
 public class Author {
+
+    private ConvertVietnameseToNormalText convertVietnameseToNormalText = new ConvertVietnameseToNormalText();
+
     @Id
     private String id;
 
@@ -26,11 +33,11 @@ public class Author {
 
     @CreatedDate
     @Field("created_at")
-    private Date createdAt;
+    private Date created_at;
 
     @LastModifiedDate
     @Field("updated_at")
-    private Date updatedAt;
+    private Date updated_at;
 
     
     // Constructors
@@ -43,19 +50,12 @@ public class Author {
         this.id = id;
         this.name = name;
         this.email = email;
-        if (this.slug == null || this.slug.isEmpty()) {
-            this.slug = slugify(this.name);
-        }
+        this.slug = convertVietnameseToNormalText.slugify(name);
     }
     
     @Override
     public String toString() {
         return name;
-    }
-
-    private String slugify(String input) {
-        // Slugify logic here
-        return input.toLowerCase().replaceAll("[^a-z0-9]+", "-");
     }
 
     // Getters and Setters
@@ -73,9 +73,7 @@ public class Author {
 
     public void setName(String name) {
         this.name = name;
-        if (this.slug == null || this.slug.isEmpty()) {
-            this.slug = slugify(this.name);
-        }
+        this.slug = convertVietnameseToNormalText.slugify(name);
     }
 
     public String getEmail() {
@@ -91,6 +89,9 @@ public class Author {
     }
 
     public void setSlug(String slug) {
+        if (slug == null || slug.isEmpty()) {
+            slug = convertVietnameseToNormalText.slugify(this.name);
+        }
         this.slug = slug;
     }
 
@@ -102,19 +103,19 @@ public class Author {
         this.isActive = isActive;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
+    public Date getCreated_at() {
+        return this.created_at;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public void setCreated_at(Date created_at) {
+        this.created_at = created_at;
     }
 
-    public Date getUpdatedAt() {
-        return updatedAt;
+    public Date getUpdated_at() {
+        return this.updated_at;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setUpdated_at(Date updated_at) {
+        this.updated_at = updated_at;
     }
 }

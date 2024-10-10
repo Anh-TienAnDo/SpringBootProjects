@@ -3,23 +3,28 @@ package app.e_commerce_application.entities;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+// import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import com.mongodb.lang.NonNull;
 
-import lombok.Data;
+import app.e_commerce_application.helper.ConvertVietnameseToNormalText;
+import jakarta.persistence.Entity;
+// import lombok.Data;
 
 import java.util.Date;
-import java.util.List;
+// import java.util.List;
 
 // @Data 
 // @NoArgsConstructor 
 // @RequiredArgsConstructor 
 // @AllArgsConstructor 
+@Entity
 @Document(collection = "media_socials")
 public class MediaSocial {
+
+    private ConvertVietnameseToNormalText convertVietnameseToNormalText = new ConvertVietnameseToNormalText();
 
     @Id
     private String id;
@@ -45,12 +50,12 @@ public class MediaSocial {
     @NonNull
     @CreatedDate
     @Field("created_at")
-    private Date createdAt;
+    private Date created_at;
 
     @NonNull
     @LastModifiedDate
     @Field("updated_at")
-    private Date updatedAt;
+    private Date updated_at;
 
     @Field("detail")
     private Detail detail;
@@ -61,15 +66,16 @@ public class MediaSocial {
 
     public MediaSocial(String title, String type, int view, boolean isActive, Detail detail) {
         this.title = title;
-        this.slug = slugify(title);
+        // this.slug = slugify(title);
+        this.slug = convertVietnameseToNormalText.slugify(title);
         if (type == null || type.isEmpty()) {
             type = "sayings";
         }
         this.type = type;
         this.view = view;
         this.isActive = isActive;
-        // this.createdAt = createdAt;
-        // this.updatedAt = updatedAt;
+        // this.created_at = created_at;
+        // this.updated_at = updated_at;
         this.detail = detail;
     }
 
@@ -82,16 +88,38 @@ public class MediaSocial {
                 ", type='" + type + '\'' +
                 ", view=" + view +
                 ", isActive=" + isActive +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
+                ", created_at=" + created_at +
+                ", updated_at=" + updated_at +
                 ", detail=" + detail +
                 '}';
     }
 
-    private String slugify(String input) {
-        // Slugify logic here
-        return input.toLowerCase().replaceAll("[^a-z0-9]+", "-");
-    }
+    // private String slugify(String input) {
+    //     // Slugify logic here
+    //     input =  toNonAccentVietnamese(input.trim());
+    //     return input.toLowerCase().replaceAll("[^a-z0-9]+", "-");
+    // }
+
+    // private String toNonAccentVietnamese(String str) {
+    //     str = str.replaceAll("[AÁÀÃẠÂẤẦẪẬĂẮẰẴẶ]", "A");
+    //     str = str.replaceAll("[àáạảãâầấậẩẫăằắặẳẵ]", "a");
+    //     str = str.replaceAll("[EÉÈẼẸÊẾỀỄỆ]", "E");
+    //     str = str.replaceAll("[èéẹẻẽêềếệểễ]", "e");
+    //     str = str.replaceAll("[IÍÌĨỊ]", "I");
+    //     str = str.replaceAll("[ìíịỉĩ]", "i");
+    //     str = str.replaceAll("[OÓÒÕỌÔỐỒỖỘƠỚỜỠỢ]", "O");
+    //     str = str.replaceAll("[òóọỏõôồốộổỗơờớợởỡ]", "o");
+    //     str = str.replaceAll("[UÚÙŨỤƯỨỪỮỰ]", "U");
+    //     str = str.replaceAll("[ùúụủũưừứựửữ]", "u");
+    //     str = str.replaceAll("[YÝỲỸỴ]", "Y");
+    //     str = str.replaceAll("[ỳýỵỷỹ]", "y");
+    //     str = str.replaceAll("[Đ]", "D");
+    //     str = str.replaceAll("[đ]", "d");
+    //     // Some system encode vietnamese combining accent as individual utf-8 characters
+    //     str = str.replaceAll("[\\u0300\\u0301\\u0303\\u0309\\u0323]", ""); // Huyền sắc hỏi ngã nặng 
+    //     str = str.replaceAll("[\\u02C6\\u0306\\u031B]", ""); // Â, Ê, Ă, Ơ, Ư
+    //     return str;
+    // }
 
     // Getters and Setters
     public String getId() {
@@ -108,7 +136,7 @@ public class MediaSocial {
 
     public void setTitle(String title) {
         this.title = title;
-        this.slug = slugify(title);
+        this.slug = convertVietnameseToNormalText.slugify(title);
     }
 
     public String getSlug() {
@@ -117,7 +145,7 @@ public class MediaSocial {
 
     public void setSlug(String slug) {
         if (slug == null || slug.isEmpty()) {
-            slug = slugify(this.title);
+            slug = convertVietnameseToNormalText.slugify(this.title);
         }
         this.slug = slug;
     }
@@ -149,20 +177,20 @@ public class MediaSocial {
         isActive = active;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
+    public Date getCreated_at() {
+        return created_at;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public void setCreated_at(Date created_at) {
+        this.created_at = created_at;
     }
 
-    public Date getUpdatedAt() {
-        return updatedAt;
+    public Date getUpdated_at() {
+        return updated_at;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setUpdated_at(Date updated_at) {
+        this.updated_at = updated_at;
     }
 
     public Detail getDetail() {
