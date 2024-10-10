@@ -26,13 +26,13 @@ public class MediaSocialServiceImpl implements MediaSocialService {
     private AuthorCategoryProducerService authorCategoryProducerService;
 
     @Override
-    public List<MediaSocial> getAll(int start, int limit) {
-        return mediaSocialRepository.getAll(start, limit); 
+    public List<MediaSocial> getAll(String type, int start, int limit) {
+        return mediaSocialRepository.getAll(type, start, limit); 
     }
 
     @Override
-    public long countAll() {
-        return mediaSocialRepository.countAll();
+    public long countAll(String type) {
+        return mediaSocialRepository.countAll(type);
     }
 
     @Override
@@ -41,8 +41,50 @@ public class MediaSocialServiceImpl implements MediaSocialService {
     }
 
     @Override
-    public Optional<MediaSocial> getBySlug(String slug) {
-        return mediaSocialRepository.getBySlug(slug);
+    public Optional<MediaSocial> getByTypeAndSlug(String type, String slug) {
+        return mediaSocialRepository.getByTypeAndSlug(type, slug);
+    }
+
+    public void createAuthor(MediaSocial mediaSocial){
+        if(mediaSocial.getDetail().getAuthor() == null){
+            return;
+        }
+        String author_slug = convertVietnameseToNormalText.slugify(mediaSocial.getDetail().getAuthor());
+        if(authorCategoryProducerService.getAuthorBySlug(author_slug).isPresent() == false){
+            Author author = new Author();
+            author.setName(mediaSocial.getDetail().getAuthor());
+            // author.setSlug(author_slug);
+            authorCategoryProducerService.saveAuthor(author);
+        } 
+    }
+
+    public void createProducer(MediaSocial mediaSocial){
+        if(mediaSocial.getDetail().getProducer() == null){
+            return;
+        }
+        String producer_slug = convertVietnameseToNormalText.slugify(mediaSocial.getDetail().getProducer());
+        if(authorCategoryProducerService.getProducerBySlug(producer_slug).isPresent() == false){
+            Producer producer = new Producer();
+            producer.setName(mediaSocial.getDetail().getProducer());
+            // producer.setSlug(producer_slug);
+            authorCategoryProducerService.saveProducer(producer);
+        }
+    }
+
+    public void createCategory(MediaSocial mediaSocial){
+        if (mediaSocial.getDetail().getCategories() == null) {
+            return;
+        }
+        List<String> categories = mediaSocial.getDetail().getCategories();
+        for (String category : categories) {
+            String category_slug = convertVietnameseToNormalText.slugify(category);
+            if(authorCategoryProducerService.getCategoryBySlug(category_slug).isPresent() == false){
+                Category newCategory = new Category();
+                newCategory.setName(category);
+                // newCategory.setSlug(category_slug);
+                authorCategoryProducerService.saveCategory(newCategory);
+            }
+        }
     }
 
     @Override
@@ -50,6 +92,7 @@ public class MediaSocialServiceImpl implements MediaSocialService {
         System.out.println("----------------------");
         System.out.println(" MediaSocialService.save() mediaSocial: " + mediaSocial);
         if (mediaSocial.getId() != null) {
+            System.out.println("MediaSocialService.save() mediaSocial.getId(): " + mediaSocial.getId());
             Optional<MediaSocial> mediaSocialOptional = this.getById(mediaSocial.getId());
             if (mediaSocialOptional.isPresent()) {
                 MediaSocial existingMediaSocial = mediaSocialOptional.get();
@@ -59,35 +102,17 @@ public class MediaSocialServiceImpl implements MediaSocialService {
                 existingMediaSocial.setActive(mediaSocial.isActive());
                 existingMediaSocial.setDetail(mediaSocial.getDetail());
 
-                String author_slug = convertVietnameseToNormalText.slugify(mediaSocial.getDetail().getAuthor());
-                String producer_slug = convertVietnameseToNormalText.slugify(mediaSocial.getDetail().getProducer());
-                if(!authorCategoryProducerService.getAuthorBySlug(author_slug).isPresent()){
-                    Author author = new Author();
-                    author.setName(mediaSocial.getDetail().getAuthor());
-                    // author.setSlug(author_slug);
-                    authorCategoryProducerService.saveAuthor(author);
-                } 
+                createAuthor(mediaSocial);
+                createProducer(mediaSocial);
+                createCategory(mediaSocial);
 
-                if(!authorCategoryProducerService.getProducerBySlug(producer_slug).isPresent()){
-                    Producer producer = new Producer();
-                    producer.setName(mediaSocial.getDetail().getProducer());
-                    // producer.setSlug(producer_slug);
-                    authorCategoryProducerService.saveProducer(producer);
-                }
-
-                List<String> categories = mediaSocial.getDetail().getCategories();
-                for (String category : categories) {
-                    String category_slug = convertVietnameseToNormalText.slugify(category);
-                    if(!authorCategoryProducerService.getCategoryBySlug(category_slug).isPresent()){
-                        Category newCategory = new Category();
-                        newCategory.setName(category);
-                        // newCategory.setSlug(category_slug);
-                        authorCategoryProducerService.saveCategory(newCategory);
-                    }
-                }
                 return mediaSocialRepository.save(existingMediaSocial);
             }
         }
+
+        createAuthor(mediaSocial);
+        createProducer(mediaSocial);
+        createCategory(mediaSocial);
         return mediaSocialRepository.save(mediaSocial);
     }
 
@@ -102,35 +127,35 @@ public class MediaSocialServiceImpl implements MediaSocialService {
     }
 
     @Override
-    public List<MediaSocial> filterByAuthorAndCategoryAndProducerSlug(String author_name, String category_name, String producer_name, int start, int limit) {
+    public List<MediaSocial> filterByTypeAndAuthorAndCategoryAndProducerSlug(String type, String author_name, String category_name, String producer_name, int start, int limit) {
         // String author_slug = convertVietnameseToNormalText.slugify(author_title);
         // String category_slug = convertVietnameseToNormalText.slugify(category_title);
         // String producer_slug = convertVietnameseToNormalText.slugify(producer_title);
-        return mediaSocialRepository.filterByAuthorAndCategoryAndProducerSlug(author_name, category_name, producer_name, start, limit);
+        return mediaSocialRepository.filterByTypeAndAuthorAndCategoryAndProducerSlug(type, author_name, category_name, producer_name, start, limit);
     }
 
     @Override
-    public long countByAuthorAndCategoryAndProducerSlug(String author_name, String category_name, String producer_name) {
+    public long countByTypeAndAuthorAndCategoryAndProducerSlug(String type, String author_name, String category_name, String producer_name) {
         // String author_slug = convertVietnameseToNormalText.slugify(author_title);
         // String category_slug = convertVietnameseToNormalText.slugify(category_title);
         // String producer_slug = convertVietnameseToNormalText.slugify(producer_title);
-        return mediaSocialRepository.countByAuthorAndCategoryAndProducerSlug(author_name, category_name, producer_name);
+        return mediaSocialRepository.countByTypeAndAuthorAndCategoryAndProducerSlug(type, author_name, category_name, producer_name);
     }
 
     @Override
-    public List<MediaSocial> searchByTitleAndFilter(String title, String author_name, String category_name, String producer_name, int start, int limit) {
+    public List<MediaSocial> searchByTitleAndFilter(String title, String author_name, String category_name, String producer_name, String type, int start, int limit) {
         // String author_slug = convertVietnameseToNormalText.slugify(author_title);
         // String category_slug = convertVietnameseToNormalText.slugify(category_title);
         // String producer_slug = convertVietnameseToNormalText.slugify(producer_title);
-        return mediaSocialRepository.searchByTitleAndFilter(title, author_name, category_name, producer_name, start, limit);
+        return mediaSocialRepository.searchByTitleAndFilter(title, author_name, category_name, producer_name, type, start, limit);
     }
 
     @Override
-    public long countSearchByTitleAndFilter(String title, String author_name, String category_name, String producer_name) {
+    public long countSearchByTitleAndFilter(String title, String author_name, String category_name, String producer_name, String type) {
         // String author_slug = convertVietnameseToNormalText.slugify(author_title);
         // String category_slug = convertVietnameseToNormalText.slugify(category_title);
         // String producer_slug = convertVietnameseToNormalText.slugify(producer_title);
-        return mediaSocialRepository.countSearchByTitleAndFilter(title, author_name, category_name, producer_name);
+        return mediaSocialRepository.countSearchByTitleAndFilter(title, author_name, category_name, producer_name, type);
     }
 
 }

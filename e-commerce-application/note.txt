@@ -26,6 +26,7 @@ Bạn có thể sử dụng đối tượng userDTO trong phương thức để 
 -------------------------
 port 8080
 api/media-socials/
+    sayings, audio-book, video
     detail/{slug}
     filter/
     GET /api/media-socials/?_query=abc&_start=0&_limit=12_type=...

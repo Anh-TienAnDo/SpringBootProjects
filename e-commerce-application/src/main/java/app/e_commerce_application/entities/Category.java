@@ -11,7 +11,7 @@ import jakarta.persistence.Entity;
 import java.util.Date;
 
 @Entity
-@Document(collection = "category")
+@Document(collection = "categories")
 public class Category {
 
     private ConvertVietnameseToNormalText convertVietnameseToNormalText = new ConvertVietnameseToNormalText();

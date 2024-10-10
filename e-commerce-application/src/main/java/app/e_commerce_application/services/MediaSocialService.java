@@ -11,13 +11,13 @@ import java.util.Optional;
 
 public interface MediaSocialService {
 
-    List<MediaSocial> getAll(int start, int limit);
+    List<MediaSocial> getAll(String type, int start, int limit);
     
-    long countAll();
+    long countAll(String type);
 
     Optional<MediaSocial> getById(String id);
 
-    Optional<MediaSocial> getBySlug(String slug);
+    Optional<MediaSocial> getByTypeAndSlug(String type, String slug);
 
     MediaSocial save(MediaSocial mediaSocial);
 
@@ -25,12 +25,12 @@ public interface MediaSocialService {
 
     List<MediaSocial> findItemByTitle(String title);
 
-    List<MediaSocial> filterByAuthorAndCategoryAndProducerSlug(String author_name, String category_name, String producer_name, int start, int limit);
+    List<MediaSocial> filterByTypeAndAuthorAndCategoryAndProducerSlug(String type, String author_name, String category_name, String producer_name, int start, int limit);
 
-    long countByAuthorAndCategoryAndProducerSlug(String author_name, String category_name, String producer_name);
+    long countByTypeAndAuthorAndCategoryAndProducerSlug(String type, String author_name, String category_name, String producer_name);
 
-    List<MediaSocial> searchByTitleAndFilter(String title, String author_name, String category_name, String producer_name, int start, int limit);
+    List<MediaSocial> searchByTitleAndFilter(String title, String author_name, String category_name, String producer_name, String type, int start, int limit);
 
-    long countSearchByTitleAndFilter(String title, String author_name, String category_name, String producer_name);
+    long countSearchByTitleAndFilter(String title, String author_name, String category_name, String producer_name, String type);
 
 } 
