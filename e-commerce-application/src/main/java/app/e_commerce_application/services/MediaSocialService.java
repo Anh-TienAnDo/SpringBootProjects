@@ -29,8 +29,8 @@ public interface MediaSocialService {
 
     long countByTypeAndAuthorAndCategoryAndProducerSlug(String type, String author_name, String category_name, String producer_name);
 
-    List<MediaSocial> searchByTitleAndFilter(String title, String author_name, String category_name, String producer_name, String type, int start, int limit);
+    List<MediaSocial> searchBySlugAndFilter(String slug, String author_name, String category_name, String producer_name, String type, int start, int limit);
 
-    long countSearchByTitleAndFilter(String title, String author_name, String category_name, String producer_name, String type);
+    long countSearchBySlugAndFilter(String slug, String author_name, String category_name, String producer_name, String type);
 
 } 

@@ -5,19 +5,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import app.e_commerce_application.payloads.CategoriesResponse;
 import app.e_commerce_application.services.AuthorCategoryProducerService;
 import jakarta.persistence.Entity;
 
-@Entity
+@RestController
 @RequestMapping("/api/categories")
 public class CategoryController {
 
     @Autowired
     private AuthorCategoryProducerService categoryService;
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<CategoriesResponse> getAll() {
         CategoriesResponse categoriesReponse = new CategoriesResponse();
         categoriesReponse.setCategoryResposeSuccess(categoryService.getAllCategories(), "Categories found");

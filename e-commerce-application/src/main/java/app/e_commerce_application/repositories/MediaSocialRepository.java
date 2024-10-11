@@ -45,14 +45,14 @@ public interface MediaSocialRepository extends MongoRepository<MediaSocial, Stri
     
     //search + filler code
     @Aggregation(pipeline = {
-        "{ $match: { 'title': {$regex: ?0, $options: 'mi'}, 'detail.author': {$regex: ?1, $options: 'mi'}, 'detail.categories': {$regex: ?2, $options: 'mi'}, 'detail.producer': {$regex: ?3, $options: 'mi'}, 'type': ?4, 'is_active': true }}",
+        "{ $match: { 'slug': {$regex: ?0, $options: 'mi'}, 'detail.author': {$regex: ?1, $options: 'mi'}, 'detail.categories': {$regex: ?2, $options: 'mi'}, 'detail.producer': {$regex: ?3, $options: 'mi'}, 'type': {$regex: ?4, $options: 'mi'}, 'is_active': true }}",
         "{ $sort: { 'updated_at': -1 } }",
         "{ $skip: ?5 }",
         "{ $limit: ?6 }"
     })
-    List<MediaSocial> searchByTitleAndFilter(String title, String author_name, String category_name, String producer_name, String type, int start, int limit);
+    List<MediaSocial> searchBySlugAndFilter(String slug, String author_name, String category_name, String producer_name, String type, int start, int limit);
 
-    @Query(value="{ 'title': {$regex: ?0, $options: 'mi'}, 'detail.author': {$regex: ?1, $options: 'mi'}, 'detail.categories': {$regex: ?2, $options: 'mi'}, 'detail.producer': {$regex: ?3, $options: 'mi'}, 'type': ?4, 'is_active': true }", count = true)
-    long countSearchByTitleAndFilter(String title, String author_name, String category_name, String producer_name, String type);
+    @Query(value="{ 'slug': {$regex: ?0, $options: 'mi'}, 'detail.author': {$regex: ?1, $options: 'mi'}, 'detail.categories': {$regex: ?2, $options: 'mi'}, 'detail.producer': {$regex: ?3, $options: 'mi'}, 'type': {$regex: ?4, $options: 'mi'}, 'is_active': true }", count = true)
+    long countSearchBySlugAndFilter(String slug, String author_name, String category_name, String producer_name, String type);
 
 }

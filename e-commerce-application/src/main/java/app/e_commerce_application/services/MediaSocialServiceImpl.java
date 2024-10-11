@@ -13,6 +13,7 @@ import app.e_commerce_application.entities.Author;
 import app.e_commerce_application.entities.Category;
 // import java.util.ArrayList;
 // import app.e_commerce_application.entities.Detail;
+import app.e_commerce_application.entities.Detail;
 
 @Service
 public class MediaSocialServiceImpl implements MediaSocialService {
@@ -91,6 +92,20 @@ public class MediaSocialServiceImpl implements MediaSocialService {
     public MediaSocial save(MediaSocial mediaSocial) {
         System.out.println("----------------------");
         System.out.println(" MediaSocialService.save() mediaSocial: " + mediaSocial);
+
+        if(mediaSocial.getDetail() == null){
+            mediaSocial.setDetail(new Detail());
+        }
+        if(mediaSocial.getDetail().getAuthor() == null){
+            mediaSocial.getDetail().setAuthor("Unknown");
+        }
+        if(mediaSocial.getDetail().getProducer() == null){
+            mediaSocial.getDetail().setProducer("Unknown");
+        }
+        if(mediaSocial.getDetail().getCategories() == null){
+            mediaSocial.getDetail().setCategories(List.of("Unknown"));
+        }
+
         if (mediaSocial.getId() != null) {
             System.out.println("MediaSocialService.save() mediaSocial.getId(): " + mediaSocial.getId());
             Optional<MediaSocial> mediaSocialOptional = this.getById(mediaSocial.getId());
@@ -131,6 +146,7 @@ public class MediaSocialServiceImpl implements MediaSocialService {
         // String author_slug = convertVietnameseToNormalText.slugify(author_title);
         // String category_slug = convertVietnameseToNormalText.slugify(category_title);
         // String producer_slug = convertVietnameseToNormalText.slugify(producer_title);
+        System.out.println("MediaSocialServiceImpl.filterByTypeAndAuthorAndCategoryAndProducerSlug() type: " + type + ", author_name: " + author_name + ", category_name: " + category_name + ", producer_name: " + producer_name + ", start: " + start + ", limit: " + limit);
         return mediaSocialRepository.filterByTypeAndAuthorAndCategoryAndProducerSlug(type, author_name, category_name, producer_name, start, limit);
     }
 
@@ -143,19 +159,21 @@ public class MediaSocialServiceImpl implements MediaSocialService {
     }
 
     @Override
-    public List<MediaSocial> searchByTitleAndFilter(String title, String author_name, String category_name, String producer_name, String type, int start, int limit) {
+    public List<MediaSocial> searchBySlugAndFilter(String query, String author_name, String category_name, String producer_name, String type, int start, int limit) {
         // String author_slug = convertVietnameseToNormalText.slugify(author_title);
         // String category_slug = convertVietnameseToNormalText.slugify(category_title);
         // String producer_slug = convertVietnameseToNormalText.slugify(producer_title);
-        return mediaSocialRepository.searchByTitleAndFilter(title, author_name, category_name, producer_name, type, start, limit);
+        String slug = convertVietnameseToNormalText.slugify(query);
+        return mediaSocialRepository.searchBySlugAndFilter(slug, author_name, category_name, producer_name, type, start, limit);
     }
 
     @Override
-    public long countSearchByTitleAndFilter(String title, String author_name, String category_name, String producer_name, String type) {
+    public long countSearchBySlugAndFilter(String query, String author_name, String category_name, String producer_name, String type) {
         // String author_slug = convertVietnameseToNormalText.slugify(author_title);
         // String category_slug = convertVietnameseToNormalText.slugify(category_title);
         // String producer_slug = convertVietnameseToNormalText.slugify(producer_title);
-        return mediaSocialRepository.countSearchByTitleAndFilter(title, author_name, category_name, producer_name, type);
+        String slug = convertVietnameseToNormalText.slugify(query);
+        return mediaSocialRepository.countSearchBySlugAndFilter(slug, author_name, category_name, producer_name, type);
     }
 
 }

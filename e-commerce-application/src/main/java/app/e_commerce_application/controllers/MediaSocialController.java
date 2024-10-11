@@ -56,7 +56,7 @@ public class MediaSocialController {
     //     return new ResponseEntity<>(mediaSocialService.getById(id), HttpStatus.OK);
     // }
 
-    @GetMapping("/detail/{type}/{slug}")
+    @GetMapping("/details/{type}/{slug}")
     public ResponseEntity<MediaSocialResponse> getByTypeAndSlug(@PathVariable String type, @PathVariable String slug) {
         System.out.println("MediaSocialController.getBySlug() type: " + type + ", slug: " + slug);
         MediaSocialResponse mediaSocialReponse = new MediaSocialResponse();
@@ -88,16 +88,16 @@ public class MediaSocialController {
     // }
 
     @GetMapping("/search-filter")
-    public ResponseEntity<MediaSocialsResponse> searchByTitleAndFilter(
-            @RequestParam(value = "_query", defaultValue = "") String title,
+    public ResponseEntity<MediaSocialsResponse> searchBySlugAndFilter(
+            @RequestParam(value = "_query", defaultValue = "") String query,
             @RequestParam(value = "_author_name", defaultValue = "") String author_name,
             @RequestParam(value = "_category_name", defaultValue = "") String category_name,
             @RequestParam(value = "_producer_name", defaultValue = "") String producer_name,
-            @RequestParam(value = "_type", defaultValue = "sayings") String type,
+            @RequestParam(value = "_type", defaultValue = "") String type,
             @RequestParam(value = "_start", defaultValue = "0") int start,
             @RequestParam(value = "_limit", defaultValue = "0") int limit
     ) {
-        System.out.println("MediaSocialController.searchByTitleAndFilter() title: " + title + ", author_name: " + author_name + ", category_name: " + category_name + ", producer_name: " + producer_name);
+        System.out.println("MediaSocialController.searchByTitleAndFilter() query: " + query + ", author_name: " + author_name + ", category_name: " + category_name + ", producer_name: " + producer_name + ", start: " + start + ", limit: " + limit);
         System.out.println("MediaSocialController.searchByTitleAndFilter() type: " + type);
         if(start <= 0){
             start = this.start;
@@ -105,10 +105,11 @@ public class MediaSocialController {
         if(limit <= 0){
             limit = this.limit;
         }
-        List<MediaSocial> mediaSocials = mediaSocialService.searchByTitleAndFilter(title, author_name, category_name, producer_name, type, start, limit);
+
+        List<MediaSocial> mediaSocials = mediaSocialService.searchBySlugAndFilter(query, author_name, category_name, producer_name, type, start, limit);
         System.out.println("MediaSocialController.searchByTitleAndFilter() mediaSocials: " + mediaSocials);
         MediaSocialsResponse mediaSocialsResponse = new MediaSocialsResponse();
-        mediaSocialsResponse.setMediaSocialsResposeSuccess(mediaSocials, mediaSocialService.countSearchByTitleAndFilter(title, author_name, category_name, producer_name, type), "MediaSocials found by title and filter");
+        mediaSocialsResponse.setMediaSocialsResposeSuccess(mediaSocials, mediaSocialService.countSearchBySlugAndFilter(query, author_name, category_name, producer_name, type), "MediaSocials found by title and filter");
         return new ResponseEntity<MediaSocialsResponse>(mediaSocialsResponse, HttpStatus.OK);
     }
 
@@ -121,14 +122,14 @@ public class MediaSocialController {
             @RequestParam(value = "_start", defaultValue = "0") int start,
             @RequestParam(value = "_limit", defaultValue = "0") int limit
     ) {
-        System.out.println("MediaSocialController.filterByAuthorAndCategoryAndProducerSlug() author_name: " + author_name + ", category_name: " + category_name + ", producer_name: " + producer_name);
-        System.out.println("MediaSocialController.filterByAuthorAndCategoryAndProducerSlug() type: " + type);
         if(start <= 0){
             start = this.start;
         }
         if(limit <= 0){
             limit = this.limit;
         }
+        System.out.println("MediaSocialController.filterByAuthorAndCategoryAndProducerSlug() author_name: " + author_name + ", category_name: " + category_name + ", producer_name: " + producer_name + ", start: " + start + ", limit: " + limit);
+        System.out.println("MediaSocialController.filterByAuthorAndCategoryAndProducerSlug() type: " + type);
         List<MediaSocial> mediaSocials = mediaSocialService.filterByTypeAndAuthorAndCategoryAndProducerSlug(type, author_name, category_name, producer_name, start, limit);
         System.out.println("MediaSocialController.filterByTypeAndAuthorAndCategoryAndProducerSlug() mediaSocials: " + mediaSocials);
         MediaSocialsResponse mediaSocialsResponse = new MediaSocialsResponse();

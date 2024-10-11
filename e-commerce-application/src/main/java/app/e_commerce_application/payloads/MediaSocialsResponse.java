@@ -12,13 +12,13 @@ import lombok.NoArgsConstructor;
 public class MediaSocialsResponse {
     private List<MediaSocial> data;
     private String status; // true if the request was successful, false otherwise
-    private Long total_elements; // total number of elements in DB
+    private Long total_items; // total number of elements in DB
     private String message = ""; // message to show to the user
 
-    public void setMediaSocialsResposeSuccess(List<MediaSocial> data, Long total_elements, String message) {
+    public void setMediaSocialsResposeSuccess(List<MediaSocial> data, Long total_items, String message) {
         this.data = data;
         this.status = "Success";
-        this.total_elements = total_elements;
+        this.total_items = total_items;
         this.message = message;
     }
 

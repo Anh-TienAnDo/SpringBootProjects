@@ -8,14 +8,20 @@ import java.util.List;
 
 @Entity
 public class Detail {
+    @Field("author")
     private String author;
 
+    @Field("categories")
     private List<String> categories;
     
+    @Field("producer")
     private String producer;
 
     @Field("image")
     private String image;
+
+    @Field("url")
+    private String url;
 
     @Field("quantity")
     private Integer quantity;
@@ -30,12 +36,13 @@ public class Detail {
     public Detail() {
     }
 
-    public Detail(String author, List<String> categories, String producer, String image, Integer quantity, Integer timeTotal, String description) {
+    public Detail(String author, List<String> categories, String producer, String image, String url, Integer quantity, Integer timeTotal, String description) {
         System.out.println("Detail constructor");
         this.author = author;
         this.categories = categories;
         this.producer = producer;
         this.image = image;
+        this.url = url;
         this.quantity = quantity;
         this.timeTotal = timeTotal;
         this.description = description;
@@ -74,6 +81,14 @@ public class Detail {
         this.image = image;
     }
 
+    public String getUrl() {
+        return this.url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     public Integer getQuantity() {
         return quantity;
     }
@@ -105,6 +120,7 @@ public class Detail {
                 ", categories=" + categories +
                 ", producer=" + producer +
                 ", image='" + image + '\'' +
+                ", url='" + url + '\'' +
                 ", quantity=" + quantity +
                 ", timeTotal=" + timeTotal +
                 '}';
