@@ -105,6 +105,9 @@ public class MediaSocialServiceImpl implements MediaSocialService {
         if(mediaSocial.getDetail().getCategories() == null){
             mediaSocial.getDetail().setCategories(List.of("Unknown"));
         }
+        if(mediaSocial.getDetail().getTime_total() == null){
+            mediaSocial.getDetail().setTime_total(0);
+        }
 
         if (mediaSocial.getId() != null) {
             System.out.println("MediaSocialService.save() mediaSocial.getId(): " + mediaSocial.getId());
@@ -142,38 +145,26 @@ public class MediaSocialServiceImpl implements MediaSocialService {
     }
 
     @Override
-    public List<MediaSocial> filterByTypeAndAuthorAndCategoryAndProducerSlug(String type, String author_name, String category_name, String producer_name, int start, int limit) {
-        // String author_slug = convertVietnameseToNormalText.slugify(author_title);
-        // String category_slug = convertVietnameseToNormalText.slugify(category_title);
-        // String producer_slug = convertVietnameseToNormalText.slugify(producer_title);
-        System.out.println("MediaSocialServiceImpl.filterByTypeAndAuthorAndCategoryAndProducerSlug() type: " + type + ", author_name: " + author_name + ", category_name: " + category_name + ", producer_name: " + producer_name + ", start: " + start + ", limit: " + limit);
-        return mediaSocialRepository.filterByTypeAndAuthorAndCategoryAndProducerSlug(type, author_name, category_name, producer_name, start, limit);
+    public List<MediaSocial> filterByTypeAndAuthorAndCategoryAndProducerSlugAndTimeTotal(String type, String author_name, String category_name, String producer_name, int time_total, int start, int limit) {
+        System.out.println("MediaSocialServiceImpl.filterByTypeAndAuthorAndCategoryAndProducerSlugAndTimeTotal() type: " + type + ", author_name: " + author_name + ", category_name: " + category_name + ", producer_name: " + producer_name + ", start: " + start + ", limit: " + limit);
+        return mediaSocialRepository.filterByTypeAndAuthorAndCategoryAndProducerSlugAndTimeTotal(type, author_name, category_name, producer_name, time_total, start, limit);
     }
 
     @Override
-    public long countByTypeAndAuthorAndCategoryAndProducerSlug(String type, String author_name, String category_name, String producer_name) {
-        // String author_slug = convertVietnameseToNormalText.slugify(author_title);
-        // String category_slug = convertVietnameseToNormalText.slugify(category_title);
-        // String producer_slug = convertVietnameseToNormalText.slugify(producer_title);
-        return mediaSocialRepository.countByTypeAndAuthorAndCategoryAndProducerSlug(type, author_name, category_name, producer_name);
+    public long countByTypeAndAuthorAndCategoryAndProducerSlugAndTimeTotal(String type, String author_name, String category_name, String producer_name, int time_total) {
+        return mediaSocialRepository.countByTypeAndAuthorAndCategoryAndProducerSlugAndTimeTotal(type, author_name, category_name, producer_name, time_total);
     }
 
     @Override
-    public List<MediaSocial> searchBySlugAndFilter(String query, String author_name, String category_name, String producer_name, String type, int start, int limit) {
-        // String author_slug = convertVietnameseToNormalText.slugify(author_title);
-        // String category_slug = convertVietnameseToNormalText.slugify(category_title);
-        // String producer_slug = convertVietnameseToNormalText.slugify(producer_title);
+    public List<MediaSocial> searchBySlugAndFilter(String query, String author_name, String category_name, String producer_name, String type, int time_total, int start, int limit) {
         String slug = convertVietnameseToNormalText.slugify(query);
-        return mediaSocialRepository.searchBySlugAndFilter(slug, author_name, category_name, producer_name, type, start, limit);
+        return mediaSocialRepository.searchBySlugAndFilter(slug, author_name, category_name, producer_name, type, time_total, start, limit);
     }
 
     @Override
-    public long countSearchBySlugAndFilter(String query, String author_name, String category_name, String producer_name, String type) {
-        // String author_slug = convertVietnameseToNormalText.slugify(author_title);
-        // String category_slug = convertVietnameseToNormalText.slugify(category_title);
-        // String producer_slug = convertVietnameseToNormalText.slugify(producer_title);
+    public long countSearchBySlugAndFilter(String query, String author_name, String category_name, String producer_name, String type, int time_total) {
         String slug = convertVietnameseToNormalText.slugify(query);
-        return mediaSocialRepository.countSearchBySlugAndFilter(slug, author_name, category_name, producer_name, type);
+        return mediaSocialRepository.countSearchBySlugAndFilter(slug, author_name, category_name, producer_name, type, time_total);
     }
 
 }

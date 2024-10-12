@@ -20,6 +20,7 @@ public class AuthorController {
     @Autowired
     private AuthorCategoryProducerService authorService;
 
+    // /api/authors
     @GetMapping("")
     public ResponseEntity<AuthorsResponse> getAll() {
         System.out.println("AuthorController.getAll()");

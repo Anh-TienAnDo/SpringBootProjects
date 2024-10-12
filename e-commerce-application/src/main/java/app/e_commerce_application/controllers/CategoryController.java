@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import app.e_commerce_application.payloads.CategoriesResponse;
 import app.e_commerce_application.services.AuthorCategoryProducerService;
-import jakarta.persistence.Entity;
 
 @RestController
 @RequestMapping("/api/categories")

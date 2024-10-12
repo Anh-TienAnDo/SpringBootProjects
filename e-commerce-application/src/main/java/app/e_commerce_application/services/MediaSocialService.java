@@ -25,12 +25,12 @@ public interface MediaSocialService {
 
     List<MediaSocial> findItemByTitle(String title);
 
-    List<MediaSocial> filterByTypeAndAuthorAndCategoryAndProducerSlug(String type, String author_name, String category_name, String producer_name, int start, int limit);
+    List<MediaSocial> filterByTypeAndAuthorAndCategoryAndProducerSlugAndTimeTotal(String type, String author_name, String category_name, String producer_name, int time_total, int start, int limit);
 
-    long countByTypeAndAuthorAndCategoryAndProducerSlug(String type, String author_name, String category_name, String producer_name);
+    long countByTypeAndAuthorAndCategoryAndProducerSlugAndTimeTotal(String type, String author_name, String category_name, String producer_name, int time_total);
 
-    List<MediaSocial> searchBySlugAndFilter(String slug, String author_name, String category_name, String producer_name, String type, int start, int limit);
+    List<MediaSocial> searchBySlugAndFilter(String slug, String author_name, String category_name, String producer_name, String type, int time_total, int start, int limit);
 
-    long countSearchBySlugAndFilter(String slug, String author_name, String category_name, String producer_name, String type);
+    long countSearchBySlugAndFilter(String slug, String author_name, String category_name, String producer_name, String type, int time_total);
 
 } 

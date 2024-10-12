@@ -27,7 +27,7 @@ public class Detail {
     private Integer quantity;
 
     @Field("time_total")
-    private Integer timeTotal;
+    private Integer time_total;
 
     @Field("description")
     private String description;
@@ -36,7 +36,7 @@ public class Detail {
     public Detail() {
     }
 
-    public Detail(String author, List<String> categories, String producer, String image, String url, Integer quantity, Integer timeTotal, String description) {
+    public Detail(String author, List<String> categories, String producer, String image, String url, Integer quantity, Integer time_total, String description) {
         System.out.println("Detail constructor");
         this.author = author;
         this.categories = categories;
@@ -44,7 +44,7 @@ public class Detail {
         this.image = image;
         this.url = url;
         this.quantity = quantity;
-        this.timeTotal = timeTotal;
+        this.time_total = time_total;
         this.description = description;
     }
 
@@ -97,12 +97,12 @@ public class Detail {
         this.quantity = quantity;
     }
 
-    public Integer getTimeTotal() {
-        return timeTotal;
+    public Integer getTime_total() {
+        return this.time_total;
     }
 
-    public void setTimeTotal(Integer timeTotal) {
-        this.timeTotal = timeTotal;
+    public void setTime_total(Integer time_total) {
+        this.time_total = time_total;
     }
 
     public String getDescription() {
@@ -122,7 +122,7 @@ public class Detail {
                 ", image='" + image + '\'' +
                 ", url='" + url + '\'' +
                 ", quantity=" + quantity +
-                ", timeTotal=" + timeTotal +
+                ", time_total=" + time_total +
                 '}';
     }
 }
