@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import app.e_commerce_application.entities.MediaSocial;
 import app.e_commerce_application.payloads.MediaSocialResponse;
 import app.e_commerce_application.payloads.MediaSocialsResponse;
+import app.e_commerce_application.security.JWTFilter;
 import app.e_commerce_application.config.Data;
 // import app.e_commerce_application.entities.Detail;
 import app.e_commerce_application.services.MediaSocialService;
@@ -27,6 +28,8 @@ public class MediaSocialController {
     @Autowired
     private MediaSocialService mediaSocialService;
 
+    protected JWTFilter jwtFilter = new JWTFilter();
+
     private Data dataConfig = new Data();
     private Integer start = dataConfig.getStart();
     private Integer limit = dataConfig.getLimit();
@@ -36,8 +39,14 @@ public class MediaSocialController {
     public ResponseEntity<MediaSocialsResponse> getAll(
         @RequestParam(value = "_type", defaultValue = "sayings") String type,
         @RequestParam(value = "_start", defaultValue = "0") int start,
-        @RequestParam(value = "_limit", defaultValue = "0") int limit
+        @RequestParam(value = "_limit", defaultValue = "0") int limit,
+        @RequestHeader(value = "Authorization", defaultValue = "") String token
     ) {
+        if(jwtFilter.doFilterUser(token)){
+            System.out.println("MediaSocialController.getAll() token: " + token);
+        }else{
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
         System.out.println("MediaSocialController.getAll() type: " + type + ", start: " + start + ", limit: " + limit);
         if(start <= 0){
             start = this.start;
@@ -127,8 +136,15 @@ public class MediaSocialController {
             @RequestParam(value = "_producer_name", defaultValue = "") String producer_name,
             @RequestParam(value = "_time_total", defaultValue = "0") int time_total,
             @RequestParam(value = "_start", defaultValue = "0") int start,
-            @RequestParam(value = "_limit", defaultValue = "0") int limit
+            @RequestParam(value = "_limit", defaultValue = "0") int limit,
+            @RequestHeader(value = "Authorization", defaultValue = "") String token
     ) {
+        System.out.println("token: " + token);
+        if(jwtFilter.doFilterUser(token)){
+            System.out.println("MediaSocialController.getAll() token: " + token);
+        }else{
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
         if(start <= 0){
             start = this.start;
         }

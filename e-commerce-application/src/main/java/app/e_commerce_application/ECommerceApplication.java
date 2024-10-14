@@ -3,15 +3,13 @@ package app.e_commerce_application;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
-import app.e_commerce_application.services.MediaSocialService;
 
 
 @SpringBootApplication
+@ComponentScan(basePackages = "app.e_commerce_application")
 public class ECommerceApplication {
-
-	@Autowired
-    private MediaSocialService mediaSocialService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ECommerceApplication.class, args);

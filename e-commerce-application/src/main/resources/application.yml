@@ -3,6 +3,10 @@ server:
 spring:
   application:
     name: e-commerce-application
+    jwt:
+      secret: BAT_CHANH_DAO
+      expiration: 86400000
+    
   data:
     mongodb:
       host: localhost
@@ -14,6 +18,7 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
+
 
 
 
