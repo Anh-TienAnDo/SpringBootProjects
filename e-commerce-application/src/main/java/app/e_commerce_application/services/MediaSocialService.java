@@ -11,9 +11,9 @@ import java.util.Optional;
 
 public interface MediaSocialService {
 
-    List<MediaSocial> getAll(String type, int start, int limit);
+    List<MediaSocial> getAll(int start, int limit);
     
-    long countAll(String type);
+    long countAll();
 
     Optional<MediaSocial> getById(String id);
 

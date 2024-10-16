@@ -18,16 +18,27 @@ public interface MediaSocialRepository extends MongoRepository<MediaSocial, Stri
     Optional<MediaSocial> getByTypeAndSlug(String type, String slug);
 
     // get all media social
-    @Aggregation(pipeline = {
-        "{ $match: {'type': ?0, 'is_active': true }}",
-        "{ $sort: { 'updated_at': -1 } }",
-        "{ $skip: ?1 }",
-        "{ $limit: ?2 }"
-    })
-    List<MediaSocial> getAll(String type, int start, int limit);
+    // @Aggregation(pipeline = {
+    //     "{ $match: {'type': ?0, 'is_active': true }}",
+    //     "{ $sort: { 'updated_at': -1 } }",
+    //     "{ $skip: ?1 }",
+    //     "{ $limit: ?2 }"
+    // })
+    // List<MediaSocial> getAll(String type, int start, int limit);
 
-    @Query(value = "{'type': ?0, 'is_active': true}", count = true)
-    long countAll(String type);
+    @Aggregation(pipeline = {
+        "{ $match: {'is_active': true }}",
+        "{ $sort: { 'updated_at': -1 } }",
+        "{ $skip: ?0 }",
+        "{ $limit: ?1 }"
+    })
+    List<MediaSocial> getAll(int start, int limit);
+
+    // @Query(value = "{'type': ?0, 'is_active': true}", count = true)
+    // long countAll(String type);
+
+    @Query(value = "{'is_active': true}", count = true)
+    long countAll();
 
     // filler author + categories + producer code
     // regex + options + skip + limit -> author = "all", category = "all", producer = "all"

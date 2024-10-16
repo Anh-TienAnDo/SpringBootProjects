@@ -27,13 +27,13 @@ public class MediaSocialServiceImpl implements MediaSocialService {
     private AuthorCategoryProducerService authorCategoryProducerService;
 
     @Override
-    public List<MediaSocial> getAll(String type, int start, int limit) {
-        return mediaSocialRepository.getAll(type, start, limit); 
+    public List<MediaSocial> getAll(int start, int limit) {
+        return mediaSocialRepository.getAll(start, limit); 
     }
 
     @Override
-    public long countAll(String type) {
-        return mediaSocialRepository.countAll(type);
+    public long countAll() {
+        return mediaSocialRepository.countAll();
     }
 
     @Override

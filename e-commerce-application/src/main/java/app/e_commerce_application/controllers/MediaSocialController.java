@@ -37,27 +37,27 @@ public class MediaSocialController {
     // /api/media-socials?_type=sayings&_start=0&_limit=0
     @GetMapping("")
     public ResponseEntity<MediaSocialsResponse> getAll(
-        @RequestParam(value = "_type", defaultValue = "sayings") String type,
+        // @RequestParam(value = "_type", defaultValue = "sayings") String type,
         @RequestParam(value = "_start", defaultValue = "0") int start,
-        @RequestParam(value = "_limit", defaultValue = "0") int limit,
-        @RequestHeader(value = "Authorization", defaultValue = "") String token
+        @RequestParam(value = "_limit", defaultValue = "0") int limit
+        // @RequestHeader(value = "Authorization", defaultValue = "") String token
     ) {
-        if(jwtFilter.doFilterUser(token)){
-            System.out.println("MediaSocialController.getAll() token: " + token);
-        }else{
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-        System.out.println("MediaSocialController.getAll() type: " + type + ", start: " + start + ", limit: " + limit);
+        // if(jwtFilter.doFilterUser(token)){
+        //     System.out.println("MediaSocialController.getAll() token: " + token);
+        // }else{
+        //     return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        // }
+        System.out.println("MediaSocialController.getAll() start:" + start + ", limit: " + limit);
         if(start <= 0){
             start = this.start;
         }
         if(limit <= 0){
             limit = this.limit;
         }
-        List<MediaSocial> mediaSocials = mediaSocialService.getAll(type, start, limit);
+        List<MediaSocial> mediaSocials = mediaSocialService.getAll(start, limit);
         System.out.println("MediaSocialController.getAll() mediaSocials: " + mediaSocials);
         MediaSocialsResponse mediaSocialsResponse = new MediaSocialsResponse();
-        mediaSocialsResponse.setMediaSocialsResposeSuccess(mediaSocials, mediaSocialService.countAll(type), "MediaSocials found");
+        mediaSocialsResponse.setMediaSocialsResposeSuccess(mediaSocials, mediaSocialService.countAll(), "MediaSocials found");
         return new ResponseEntity<MediaSocialsResponse>(mediaSocialsResponse, HttpStatus.OK);
     }
 
@@ -130,7 +130,6 @@ public class MediaSocialController {
     @GetMapping("/filter")
     public ResponseEntity<MediaSocialsResponse> filterByTypeAndAuthorAndCategoryAndProducerSlug(
             @RequestParam(value = "_type", defaultValue = "") String type,
-            // @RequestParam(value = "_type", defaultValue = "sayings") String type,
             @RequestParam(value = "_author_name", defaultValue = "") String author_name,
             @RequestParam(value = "_category_name", defaultValue = "") String category_name,
             @RequestParam(value = "_producer_name", defaultValue = "") String producer_name,
@@ -139,12 +138,6 @@ public class MediaSocialController {
             @RequestParam(value = "_limit", defaultValue = "0") int limit,
             @RequestHeader(value = "Authorization", defaultValue = "") String token
     ) {
-        System.out.println("token: " + token);
-        if(jwtFilter.doFilterUser(token)){
-            System.out.println("MediaSocialController.getAll() token: " + token);
-        }else{
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
         if(start <= 0){
             start = this.start;
         }
