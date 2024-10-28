@@ -8,10 +8,10 @@
 		<version>3.2.11</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>app</groupId>
-	<artifactId>e-commerce-application</artifactId>
+	<groupId>com.ptit</groupId>
+	<artifactId>product-search</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>e-commerce-application</name>
+	<name>product-search</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
@@ -30,7 +30,6 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
@@ -50,20 +49,6 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- JWT -->
-		<dependency>
-			<groupId>com.auth0</groupId>
-			<artifactId>java-jwt</artifactId>
-			<version>3.18.1</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/jakarta.persistence/jakarta.persistence-api -->
-		<dependency>
-			<groupId>jakarta.persistence</groupId>
-			<artifactId>jakarta.persistence-api</artifactId>
-			<version>3.0.0</version>
-		</dependency>
-
-
 	</dependencies>
 
 	<build>
