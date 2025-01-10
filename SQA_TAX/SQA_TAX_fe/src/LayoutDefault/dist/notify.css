@@ -1,0 +1,60 @@
+@charset "UTF-8";
+.notify .notify__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.notify .notify__header-left {
+  display: flex;
+  align-items: center;
+}
+.notify .notify__header-left .notify__bell {
+  padding: 0px 10px;
+}
+.notify .notify__header-left .notify__title {
+  padding: 5px 10px;
+}
+.notify .notify__content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.notify .notify__content .notify__box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.notify .notify__content .notify__box .notify-icon {
+  display: flex;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: antiquewhite;
+  justify-content: center;
+  align-items: center;
+}
+.notify .notify__content .notify__box .notify-detail {
+  flex: 1;
+  margin-left: 20px;
+}
+.notify .notify__content .notify__box .notify-detail h4 {
+  margin: 0;
+}
+.notify .notify__content .notify__box .notify-detail .notify-time {
+  margin: 0;
+}
+.notify .ant-dropdown-menu {
+  width: 400px;
+  height: 400px;
+  overflow-y: auto;
+}
+.notify .ant-dropdown-menu-item-divider {
+  margin: 0 !important;
+}
+.notify .ant-dropdown-menu-item:nth-child(1):hover {
+  background-color: transparent;
+  /* Ghi đè màu nền khi hover */
+  color: inherit;
+  /* Ghi đè màu chữ khi hover, nếu cần */
+  cursor: default;
+}

@@ -1,0 +1,63 @@
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.16.0
+    container_name: 2g-ram-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+    networks:
+      - 2g_ram_elastic
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.16.0
+    container_name: 2g-ram-kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    networks:
+      - 2g_ram_elastic
+
+  # mongodb:
+  #   image: mongodb/mongodb-community-server:latest
+  #   container_name: seo-mongodb
+  #   ports:
+  #     - "27018:27017"
+  #   networks:
+  #     - elastic
+  #   volumes:
+  #     - ./data/mongodb:/data/db
+
+  redis:
+    image: redis/redis-stack-server:latest
+    container_name: seo-redis
+    ports:
+      - "6378:6379"
+    networks:
+      - 2g_ram_elastic
+    volumes:
+      - ./data/redis:/data
+
+networks:
+  # elastic:
+  2g_ram_elastic:
+    driver: bridge
+  
+volumes:
+  es_data:
+    driver: local
+  # mongo_data:
+  #   driver: local
+  redis_data:
+    driver: local
+

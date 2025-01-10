@@ -1,0 +1,171 @@
+.content__list-unpaid-tax {
+  width: 1300px;
+  padding-left: 25px;
+  margin-top: 55px;
+}
+
+.container__unpaid-tax{
+  display: flex;
+  flex-direction: column;
+}
+
+.content__grid-list-unpaid-tax-container {
+  width: 1300px;
+  display: grid;
+  grid-template-columns: 45% 13% 22% 14%; /* Phân chia độ rộng của mỗi cột */
+  background-color: #fff; /* Màu nền cho container, đặt màu trắng hoặc màu khác tùy ý */
+}
+
+
+.grid-item-header{
+  border: 1px solid #000; /* Đường viền màu đen với độ rộng 1px */
+  background-color: #fff; /* Màu nền cho từng grid item, đặt màu sáng hoặc màu khác tùy ý */
+  font-weight: 500;
+  text-align: center;
+}
+
+.grid-item-header:nth-child(1){
+  text-align: center;
+}
+
+.grid-item {
+  display: flex;
+  align-items: center; /* Giữ nguyên để căn giữa theo chiều dọc */
+  justify-content: center; /* Căn nội dung bắt đầu từ cạnh trái */
+  border: 1px solid #000; /* Đường viền màu đen với độ rộng 1px */
+  background-color: #fff; /* Màu nền cho từng grid item, đặt màu sáng hoặc màu khác tùy ý */
+}
+
+.grid-item:nth-child(1) {
+  text-align: center; /* Căn trái nội dung bên trong */
+}
+
+.custom-modal .ant-modal .ant-modal-content{
+  /* Các thuộc tính căn giữa nếu cần */
+  width: 1400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.container{
+  max-width: none;
+  width: 1360px;
+  margin-left: 23px;
+  margin-bottom: 20px;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th, .data-table td{
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.data-table th {
+  background-color: #f2f2f2;
+}
+
+
+.data-table th:nth-child(1), .data-table td:nth-child(1) {
+  min-width: 100px;
+  box-sizing: border-box;
+}
+
+.data-table th:nth-child(2), .data-table td:nth-child(2){
+  min-width: 100px;
+  box-sizing: border-box;
+}
+
+.data-table th:nth-child(3), .data-table td:nth-child(3){
+  width: 150px;
+  box-sizing: border-box;
+}
+
+.data-table th:nth-child(4), .data-table td:nth-child(4){
+  width: 150px;
+  box-sizing: border-box;
+}
+
+.data-table th:nth-child(5), .data-table td:nth-child(5){
+  width: 150px;
+  box-sizing: border-box;
+}
+
+.data-table th:nth-child(6), .data-table td:nth-child(6){
+  width: 150px;
+  box-sizing: border-box;
+}
+
+.data-table th:nth-child(7), .data-table td:nth-child(7){
+  width: 150px;
+  box-sizing: border-box;
+} 
+.data-table th:nth-child(8), .data-table td:nth-child(8){
+  width: 100px;
+  box-sizing: border-box;
+} 
+.data-table th:nth-child(9), .data-table td:nth-child(9){
+  width: 100px;
+  box-sizing: border-box;
+} 
+.data-table th:nth-child(10), .data-table td:nth-child(10){
+  width: 100px;
+  box-sizing: border-box;
+} 
+.data-table th:nth-child(11), .data-table td:nth-child(11){
+  width: 100px;
+  box-sizing: border-box;
+} 
+.data-table th:nth-child(12), .data-table td:nth-child(12){
+  width: 100px;
+  box-sizing: border-box;
+} 
+
+
+/* .data-table th, .data-table td{
+  width: 100px;
+} */
+
+/* Định dạng cho các hàng để chúng không quá rộng */
+.data-table tr {
+  display: block;
+}
+
+.update_table{
+  margin-left: -255px;
+}
+
+.content__payment-tax{
+  display: flex;
+  margin-top: 35px;
+  margin-left: 1165px;
+
+}
+.sum__payment-tax{
+  margin-left: 1200px;
+}
+.box1{
+  border-right: none;
+}
+.box2{
+  border-left: none;
+  border-right: none;
+}
+
+.box3{
+  border-left: none;
+  border-right: none;
+}
+
+
+.box-container{
+  height:42px;
+}
+.box-container .box4 {
+  border-left: none;
+}

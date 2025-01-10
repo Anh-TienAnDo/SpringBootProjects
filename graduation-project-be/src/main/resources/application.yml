@@ -1,0 +1,26 @@
+server:
+  port: 8899
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/seo
+      host: localhost
+      port: 27017
+      database: seo
+    redis:
+      host: ;ocalhost
+      port: 6378
+  elasticsearch:
+    rest:
+      uris: localhost:9200
+
+application:
+  elastic:
+    port: 9200
+    host: localhost
+    scheme: http
+
+logging:
+  level:
+    org.springframework.data.mongodb.core: DEBUG
