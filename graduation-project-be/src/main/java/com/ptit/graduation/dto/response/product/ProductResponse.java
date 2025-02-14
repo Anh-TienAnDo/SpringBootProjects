@@ -67,15 +67,30 @@ public class ProductResponse implements Serializable{
   @Field(name = "location")
   private String location;
 
+  @org.springframework.data.elasticsearch.annotations.Field(name = "location_id")
+  @JsonProperty("location_id")
+  @Field(name = "location_id")
+  private String locationId;
+
   @org.springframework.data.elasticsearch.annotations.Field(name = "brand_name")
   @JsonProperty("brand_name")
   @Field(name = "brand_name")
   private String brandName;
 
+  @org.springframework.data.elasticsearch.annotations.Field(name = "brand_id")
+  @JsonProperty("brand_id")
+  @Field(name = "brand_id")
+  private String brandId;
+
   @org.springframework.data.elasticsearch.annotations.Field(name = "category_name")
   @JsonProperty("category_name")
   @Field(name = "category_name")
   private String categoryName;
+
+  @org.springframework.data.elasticsearch.annotations.Field(name = "category_id")
+  @JsonProperty("category_id")
+  @Field(name = "category_id")
+  private String categoryId;
 
   @org.springframework.data.elasticsearch.annotations.Field(name = "quantity")
   @JsonProperty("quantity")

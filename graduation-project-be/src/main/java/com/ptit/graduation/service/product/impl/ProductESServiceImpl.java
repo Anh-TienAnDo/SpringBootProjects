@@ -270,19 +270,19 @@ public class ProductESServiceImpl implements ProductESService {
         .toList();
 
     return Query.of(q -> q.terms(t -> t
-        .field("location_id.keyword")
+        .field("location_id")
         .terms(v -> v.value(locationFieldValues))));
   }
 
   private Query filterBrand(String brandId) {
     return Query.of(q -> q.term(t -> t
-        .field("brand_id.keyword")
+        .field("brand_id")
         .value(brandId)));
   }
 
   private Query filterCategory(String categoryId) {
     return Query.of(q -> q.term(t -> t
-        .field("category_id.keyword")
+        .field("category_id")
         .value(categoryId)));
   }
 
@@ -316,8 +316,11 @@ public class ProductESServiceImpl implements ProductESService {
               .description(productES.getDescription())
               .review(productES.getReview())
               .location(productES.getLocation())
+              .locationId(productES.getLocationId())
               .brandName(productES.getBrandName())
+              .brandId(productES.getBrandId())
               .categoryName(productES.getCategoryName())
+              .categoryId(productES.getCategoryId())
               .quantity(productES.getQuantity())
               .soldQuantity(productES.getSoldQuantity())
               .attribute(productES.getAttribute())

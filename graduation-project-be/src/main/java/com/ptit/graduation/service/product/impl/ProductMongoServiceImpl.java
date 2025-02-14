@@ -89,9 +89,6 @@ public class ProductMongoServiceImpl extends BaseServiceImpl<ProductMongo> imple
     List<String> locationIds = request.getLocationIds();
     if (locationIds == null || locationIds.isEmpty()) {
       locationIds = new ArrayList<>();
-      // for (String location : LOCATIONS_POPULAR) {
-      //   locationIds.add(locationService.findByName(location).getId());
-      // }
       List<LocationMongo> locations = locationService.list();
       for (LocationMongo location : locations) {
         locationIds.add(location.getId());
@@ -228,8 +225,11 @@ public class ProductMongoServiceImpl extends BaseServiceImpl<ProductMongo> imple
         .description(product.getDescription())
         .review(product.getReview())
         .location(product.getLocation())
+        .locationId(product.getLocationId())
         .brandName(product.getBrandName())
+        .brandId(product.getBrandId())
         .categoryName(product.getCategoryName())
+        .categoryId(product.getCategoryId())
         .quantity(product.getQuantity())
         .soldQuantity(product.getSoldQuantity())
         .build();

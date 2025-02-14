@@ -156,8 +156,8 @@ public class DataInitialization implements CommandLineRunner {
         List<ProductMongo> products = new ArrayList<>();
         List<ProductES> esProducts = new ArrayList<>();
 
-        // 52000 * 26 * 7 = 9,100,000
-        for (int j = 1; j < 8; j++) {
+        // 52000 * 26 * 1 = 
+        for (int j = 1; j < 2; j++) {
           for (String[] prefix : prefixes) {
             String name = prefix[0] + " " + text.charAt(i) + j;
             brand = brands.get(faker.number().numberBetween(0, brands.size() - 1));
@@ -193,26 +193,22 @@ public class DataInitialization implements CommandLineRunner {
               try {
                 productMongoService.bulkInsert(products);
                 productESService.bulkInsert(esProducts);
+                esProducts.clear();
+                products.clear();
               } catch (Exception e) {
                 log.error("Error during data insertion", e);
               }
-              esProducts.clear();
             }
           }
           try {
             productMongoService.bulkInsert(products);
             productESService.bulkInsert(esProducts);
+            esProducts.clear();
+            products.clear();
           } catch (Exception e) {
             log.error("Error during data insertion", e);
           }
         }
-
-        // try {
-        //   // productMongoService.bulkInsert(products);
-        //   productESService.bulkInsert(esProducts);
-        // } catch (Exception e) {
-        //   log.error("Error during data insertion", e);
-        // }
       }
 
     }

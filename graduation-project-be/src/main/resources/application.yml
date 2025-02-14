@@ -9,7 +9,7 @@ spring:
       port: 27017
       database: seo
     redis:
-      host: ;ocalhost
+      host: localhost
       port: 6378
   elasticsearch:
     rest:
