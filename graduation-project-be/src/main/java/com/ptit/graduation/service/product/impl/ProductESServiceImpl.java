@@ -182,28 +182,26 @@ public class ProductESServiceImpl implements ProductESService {
         }
       }
       
-      if(countProduct == 0) {
-        for (List<Query> filters : shouldFiltersWithFuzziness) {
-          CountResponse countResponse = elasticsearchClient.count(c -> c
+      for (List<Query> filters : shouldFiltersWithFuzziness) {
+        CountResponse countResponse = elasticsearchClient.count(c -> c
+            .index("products")
+            .query(q -> q.bool(b -> b.filter(filters))));
+        countProduct = countResponse.count();
+        if (countProduct > 0) {
+          SearchResponse<ProductES> response = elasticsearchClient.search(s -> s
               .index("products")
-              .query(q -> q.bool(b -> b.filter(filters))));
-          countProduct = countResponse.count();
-          if (countProduct > 0) {
-            SearchResponse<ProductES> response = elasticsearchClient.search(s -> s
-                .index("products")
-                .query(q -> q.bool(b -> b.filter(filters)))
-                .from(from)
-                .size(size)
-                .sort(so -> so.field(f -> f
-                    .field(finalSortField)
-                    .order(finalSortOrder))),
-                ProductES.class);
+              .query(q -> q.bool(b -> b.filter(filters)))
+              .from(from)
+              .size(size)
+              .sort(so -> so.field(f -> f
+                  .field(finalSortField)
+                  .order(finalSortOrder))),
+              ProductES.class);
 
-            for (Hit<ProductES> hit : response.hits().hits()) {
-              products.add(hit.source());
-            }
-            return ProductPageResponse.of(this.toDTO(products), countProduct);
+          for (Hit<ProductES> hit : response.hits().hits()) {
+            products.add(hit.source());
           }
+          return ProductPageResponse.of(this.toDTO(products), countProduct);
         }
       }
       return ProductPageResponse.of(this.toDTO(products), countProduct);

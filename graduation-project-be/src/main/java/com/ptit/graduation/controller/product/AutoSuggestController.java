@@ -49,7 +49,7 @@ public class AutoSuggestController {
     );
   }
 
-  @GetMapping("/clear-all-keys-in-redis")
+  @GetMapping("/clear-all")
   public ResponseGeneral<String> clearAllKeysInRedis() {
     log.info("(clearAllKeysInRedis)");
 

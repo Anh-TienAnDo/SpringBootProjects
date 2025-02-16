@@ -81,14 +81,14 @@ public class ProductRedisServiceImpl implements ProductRedisService {
     List<Map<String, List<String>>> mapkeys = new ArrayList<>();
     ConvertVietnameseToNormalText convert = new ConvertVietnameseToNormalText();
     for (int i = 0; i < keys.size(); i++) {
-      String key = keys.get(i).trim().toLowerCase();
-      String keySlug = convert.slugify(key);
-      String prefixTmp = keySlug.substring(0, 1);
+      String value = keys.get(i).trim().toLowerCase();
+      String valueSlug = convert.slugify(value);
+      String prefix = valueSlug.substring(0, 1);
 
       boolean isExist = false;
       for (int j = 0; j < mapkeys.size(); j++) {
-        if (mapkeys.get(j).containsKey(prefixTmp)) {
-          mapkeys.get(j).get(prefixTmp).add(key + "&&" + keySlug);
+        if (mapkeys.get(j).containsKey(prefix)) {
+          mapkeys.get(j).get(prefix).add(value + "&&" + valueSlug);
           isExist = true;
           break;
         }
@@ -96,8 +96,8 @@ public class ProductRedisServiceImpl implements ProductRedisService {
       if (!isExist) {
         Map<String, List<String>> map = new HashMap<>();
         List<String> list = new ArrayList<>();
-        list.add(key + "&&" + keySlug);
-        map.put(prefixTmp, list);
+        list.add(value + "&&" + valueSlug);
+        map.put(prefix, list);
         mapkeys.add(map);
       }
     }

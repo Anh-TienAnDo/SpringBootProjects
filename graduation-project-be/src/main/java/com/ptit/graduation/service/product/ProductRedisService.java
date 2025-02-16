@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import com.ptit.graduation.dto.response.product.ProductResponse;
-import com.ptit.graduation.entity.product.ProductMongo;
 
 public interface ProductRedisService {
   

@@ -5,7 +5,6 @@ import com.mongodb.client.model.BulkWriteOptions;
 import com.mongodb.client.model.InsertOneModel;
 import com.mongodb.client.model.WriteModel;
 import com.ptit.graduation.dto.request.product.ProductFilterRequest;
-import com.ptit.graduation.dto.response.product.ProductListResponse;
 import com.ptit.graduation.dto.response.product.ProductPageResponse;
 import com.ptit.graduation.dto.response.product.ProductResponse;
 import com.ptit.graduation.entity.product.LocationMongo;
@@ -15,6 +14,7 @@ import com.ptit.graduation.service.base.impl.BaseServiceImpl;
 import com.ptit.graduation.service.product.LocationService;
 import com.ptit.graduation.service.product.ProductMongoService;
 import com.ptit.graduation.service.product.ProductRedisService;
+import com.ptit.graduation.service.product.RedisService;
 import com.ptit.graduation.utils.ConvertVietnameseToNormalText;
 import com.ptit.graduation.utils.NgramUtils;
 import com.ptit.graduation.utils.NormalTextSearch;
@@ -39,7 +39,6 @@ import java.util.stream.Collectors;
 import java.util.Comparator;
 
 import static com.ptit.graduation.constants.GraduationProjectConstants.CommonConstants.NGRAM_COUNT;
-import static com.ptit.graduation.constants.GraduationProjectConstants.CommonConstants.LOCATIONS_POPULAR;
 import static com.ptit.graduation.utils.Stopword.removeStopWords;
 
 @Slf4j
@@ -51,6 +50,8 @@ public class ProductMongoServiceImpl extends BaseServiceImpl<ProductMongo> imple
   private ProductRedisService productRedisService;
   @Autowired
   private LocationService locationService;
+  @Autowired
+  private RedisService redisService;
 
   public ProductMongoServiceImpl(ProductMongoRepository repository, MongoTemplate mongoTemplate) {
     super(repository);
@@ -82,7 +83,12 @@ public class ProductMongoServiceImpl extends BaseServiceImpl<ProductMongo> imple
     keyword = VietnameseAccentMapper.convertToAccented(keyword);
     keyword = removeStopWords(keyword);
     keyword = fuzzySearch(keyword);
-
+    if(request.getPage() == 0){
+      List<ProductResponse> products = redisService.getSearchResults(keyword);
+      if(products != null){
+        return ProductPageResponse.of(products, products.size());
+      }
+    }
     List<String> ngrams = NgramUtils.createNGrams(keyword, NGRAM_COUNT);
     log.info("ngrams: {}", ngrams);
 
@@ -133,7 +139,11 @@ public class ProductMongoServiceImpl extends BaseServiceImpl<ProductMongo> imple
 
     List<ProductResponse> products = mongoTemplate.find(query, ProductResponse.class, "products");
     long total = mongoTemplate.count(Query.of(query).limit(-1).skip(-1), ProductResponse.class, "products");
-
+    
+    if (products.isEmpty()) {
+      return ProductPageResponse.of(new ArrayList<>(), 0);
+    }
+    
     for (ProductResponse product : products) {
       int score = 0;
       for (String ngram : ngrams) {
@@ -151,6 +161,7 @@ public class ProductMongoServiceImpl extends BaseServiceImpl<ProductMongo> imple
     }
 
     products.sort(Comparator.comparing(ProductResponse::getScore).reversed());
+    redisService.saveSearchResults(keyword, products, 10);
     return ProductPageResponse.of(products, total);
   }
 
@@ -192,23 +203,18 @@ public class ProductMongoServiceImpl extends BaseServiceImpl<ProductMongo> imple
   }
 
   @Override
-  public ProductListResponse getAll(int skip, int limit) {
+  public ProductPageResponse getAll(int skip, int limit) {
     try {
       log.info("(getAll) skip: {}, limit: {}", skip, limit);
-      if (productRedisService.checkProductsExist()) {
-        List<ProductResponse> products = productRedisService.getAll(skip, limit);
-        long total = products.size();
-        return ProductListResponse.of(products, total);
-      }
       List<ProductMongo> products = repository.getAll(skip, limit);
-      List<ProductResponse> productResponses = products.stream()
+      List<ProductResponse> productListResponse = products.stream()
           .map(product -> convertProductMongoToProductResponse(product))
           .collect(Collectors.toList());
       long total = products.size();
-      return ProductListResponse.of(productResponses, total);
+      return ProductPageResponse.of(productListResponse, total);
     } catch (Exception e) {
       log.error("Error: {}", e.getMessage());
-      return ProductListResponse.of(new ArrayList<>(), 0);
+      return ProductPageResponse.of(new ArrayList<>(), 0);
     }
   }
 

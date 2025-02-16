@@ -2,7 +2,6 @@ package com.ptit.graduation.controller.product;
 
 import com.ptit.graduation.dto.request.product.ProductFilterRequest;
 import com.ptit.graduation.dto.response.ResponseGeneral;
-import com.ptit.graduation.dto.response.product.ProductListResponse;
 import com.ptit.graduation.dto.response.product.ProductPageResponse;
 import com.ptit.graduation.entity.product.ProductMongo;
 import com.ptit.graduation.facade.ProductFacadeService;
@@ -44,7 +43,7 @@ public class ProductController {
   }
 
   @GetMapping("")
-  public ResponseGeneral<ProductListResponse> getAll(
+  public ResponseGeneral<ProductPageResponse> getAll(
         @RequestParam(defaultValue = "0") int skip,
         @RequestParam(defaultValue = "50") int limit
   ) {
