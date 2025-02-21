@@ -101,8 +101,8 @@ public class ProductResponse implements Serializable{
   @Field(name = "sold_quantity")
   private Long soldQuantity;
 
-  @Transient
-  private int score;
+  // @Transient
+  // private int score;
 
   @org.springframework.data.elasticsearch.annotations.Field(name = "attribute")
   @JsonProperty("attribute")

@@ -23,5 +23,5 @@ public class ProductFilterRequest {
   private int sort; // 1: Price Asc, 2: Price Desc, khác: Review Desc
   private float review = 3.0f;
   private int page = 0;
-  private int size = 20; // Số lượng sản phẩm trên 1 trang
+  private int size = 30; // Số lượng sản phẩm trên 1 trang
 }

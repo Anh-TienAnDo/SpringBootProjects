@@ -17,7 +17,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMongo> implements UserS
   private final UserMongoRepository userRepository;
 
   @Autowired
-  private HttpServletRequest request;
+  // private HttpServletRequest request;
 
   public UserServiceImpl(UserMongoRepository userRepository) {
     super(userRepository);
@@ -45,11 +45,11 @@ public class UserServiceImpl extends BaseServiceImpl<UserMongo> implements UserS
     return userRepository.findByEmail(email);
   }
 
-  @Override
-  public String addUserIp() {
-    // TODO Auto-generated method stub
-    String ip = request.getRemoteAddr();
-    return ip;
-  }
+  // @Override
+  // public String addUserIp() {
+  //   // TODO Auto-generated method stub
+  //   String ip = request.getRemoteAddr();
+  //   return ip;
+  // }
 
 }

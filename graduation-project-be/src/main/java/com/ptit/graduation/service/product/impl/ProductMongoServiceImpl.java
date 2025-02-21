@@ -83,12 +83,14 @@ public class ProductMongoServiceImpl extends BaseServiceImpl<ProductMongo> imple
     keyword = VietnameseAccentMapper.convertToAccented(keyword);
     keyword = removeStopWords(keyword);
     keyword = fuzzySearch(keyword);
-    if(request.getPage() == 0){
-      List<ProductResponse> products = redisService.getSearchResults(keyword);
-      if(products != null){
-        return ProductPageResponse.of(products, products.size());
-      }
+
+    // check if the keyword is in the cache
+    List<ProductResponse> productsCache = redisService.getSearchResults(keyword+String.valueOf(request.getPage()));
+    if (productsCache != null) {
+      // log.info("productsCache: {}", productsCache);
+      return ProductPageResponse.of(productsCache, productsCache.size());
     }
+
     List<String> ngrams = NgramUtils.createNGrams(keyword, NGRAM_COUNT);
     log.info("ngrams: {}", ngrams);
 
@@ -139,49 +141,23 @@ public class ProductMongoServiceImpl extends BaseServiceImpl<ProductMongo> imple
 
     List<ProductResponse> products = mongoTemplate.find(query, ProductResponse.class, "products");
     long total = mongoTemplate.count(Query.of(query).limit(-1).skip(-1), ProductResponse.class, "products");
-    
+
     if (products.isEmpty()) {
       return ProductPageResponse.of(new ArrayList<>(), 0);
     }
-    
-    for (ProductResponse product : products) {
-      int score = 0;
-      for (String ngram : ngrams) {
-        if (product.getName().contains(ngram)) {
-          score += 10;
-        }
-        if (product.getBrandName().contains(ngram)) {
-          score += 5;
-        }
-        if (product.getCategoryName().contains(ngram)) {
-          score += 3;
-        }
-      }
-      product.setScore(score);
-    }
 
-    products.sort(Comparator.comparing(ProductResponse::getScore).reversed());
-    redisService.saveSearchResults(keyword, products, 10);
+    redisService.saveSearchResults(keyword+String.valueOf(request.getPage()), products, 10);
     return ProductPageResponse.of(products, total);
   }
 
   private String fuzzySearch(String keyword) {
     log.info("fuzzySearch: {}", keyword);
     ConvertVietnameseToNormalText convert = new ConvertVietnameseToNormalText();
-    List<Object> keysRedis = productRedisService.getKeys();
 
     String[] keywordArr = keyword.split(" ");
     for (int i = 0; i < keywordArr.length; i++) {
       String text = String.join(" ", Arrays.asList(keywordArr).subList(i, keywordArr.length));
-      List<String> keyList = new ArrayList<>();
-      for (Object obj : keysRedis) {
-        if (obj instanceof Map<?, ?>) {
-          Map<?, ?> map = (Map<?, ?>) obj;
-          if (map.containsKey(text.substring(0, 1))) {
-            keyList.addAll((List<String>) map.get(convert.toNonAccentVietnamese(text.substring(0, 1))));
-          }
-        }
-      }
+      List<String> keyList = productRedisService.getKeysByText(text);
 
       int start = 0;
       while (start < text.length()) {
@@ -240,4 +216,82 @@ public class ProductMongoServiceImpl extends BaseServiceImpl<ProductMongo> imple
         .soldQuantity(product.getSoldQuantity())
         .build();
   }
+
+
+
+
+
+  // @Repository
+  // public class ProductRepositoryCustom {
+  //   private final MongoTemplate mongoTemplate;
+
+  //   public ProductRepositoryCustom(MongoTemplate mongoTemplate) {
+  //     this.mongoTemplate = mongoTemplate;
+  //   }
+
+  //   public List<Product> searchProducts(String keyword1, String keyword2) {
+  //     // Match: Tìm sản phẩm có cả hai từ khóa trong ngrams
+  //     MatchOperation matchStage = Aggregation.match(
+  //         Criteria.where("ngrams").all(keyword1, keyword2));
+
+  //     // Tính số lần xuất hiện từ khóa trong ngrams
+  //     AddFieldsOperation keywordScore = Aggregation.addFields()
+  //         .addField("keywordScore")
+  //         .withValue(
+  //             ConditionalOperators.sizeOfArray(
+  //                 ArrayOperators.Filter.filter("ngrams")
+  //                     .as("word")
+  //                     .by(ComparisonOperators.In.inValue("word").in(keyword1, keyword2))))
+  //         .build();
+
+  //     // Tính điểm xuất hiện trong name
+  //     AddFieldsOperation nameScore = Aggregation.addFields()
+  //         .addField("nameScore")
+  //         .withValue(
+  //             ConditionalOperators.when(
+  //                 ComparisonOperators.RegexMatch.valueOf("$name")
+  //                     .regex(keyword1 + ".*" + keyword2).options("i"))
+  //                 .then(5).otherwise(
+  //                     ConditionalOperators.when(
+  //                         ComparisonOperators.RegexMatch.valueOf("$name")
+  //                             .regex(keyword1 + "|" + keyword2).options("i"))
+  //                         .then(3).otherwise(0)))
+  //         .build();
+
+  //     // Tính điểm xuất hiện trong description
+  //     AddFieldsOperation descriptionScore = Aggregation.addFields()
+  //         .addField("descriptionScore")
+  //         .withValue(
+  //             ConditionalOperators.when(
+  //                 ComparisonOperators.RegexMatch.valueOf("$description")
+  //                     .regex(keyword1 + ".*" + keyword2).options("i"))
+  //                 .then(3).otherwise(
+  //                     ConditionalOperators.when(
+  //                         ComparisonOperators.RegexMatch.valueOf("$description")
+  //                             .regex(keyword1 + "|" + keyword2).options("i"))
+  //                         .then(1).otherwise(0)))
+  //         .build();
+
+  //     // Tổng hợp điểm
+  //     AddFieldsOperation totalScore = Aggregation.addFields()
+  //         .addField("relevanceScore")
+  //         .withValue(
+  //             ArithmeticOperators.Add.add("keywordScore", "nameScore", "descriptionScore"))
+  //         .build();
+
+  //     // Sắp xếp theo relevanceScore giảm dần
+  //     SortOperation sort = Aggregation.sort(Sort.by(Sort.Direction.DESC, "relevanceScore"));
+
+  //     // Projection: Chỉ lấy các trường cần thiết
+  //     ProjectionOperation project = Aggregation.project("name", "description", "keywordScore", "nameScore",
+  //         "descriptionScore", "relevanceScore");
+
+  //     // Thực hiện Aggregation Pipeline
+  //     Aggregation aggregation = Aggregation.newAggregation(
+  //         matchStage, keywordScore, nameScore, descriptionScore, totalScore, sort, project);
+
+  //     return mongoTemplate.aggregate(aggregation, "products", Product.class).getMappedResults();
+  //   }
+  // }
+
 }

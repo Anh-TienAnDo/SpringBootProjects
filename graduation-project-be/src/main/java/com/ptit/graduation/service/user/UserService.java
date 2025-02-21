@@ -12,5 +12,5 @@ public interface UserService extends BaseService<UserMongo> {
 
   UserMongo findByEmail(String email);
 
-  String addUserIp();
+  // String addUserIp();
 }

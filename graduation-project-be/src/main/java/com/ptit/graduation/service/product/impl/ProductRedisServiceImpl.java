@@ -111,6 +111,25 @@ public class ProductRedisServiceImpl implements ProductRedisService {
   }
 
   @Override
+  public List<String> getKeysByText(String text) {
+    ConvertVietnameseToNormalText convert = new ConvertVietnameseToNormalText();
+    List<String> keyList = new ArrayList<>();
+    for (Object obj : getKeys()) {
+      if (obj instanceof Map<?, ?>) {
+        Map<?, ?> map = (Map<?, ?>) obj;
+        if (map.containsKey(text.substring(0, 1))) {
+          try {
+            keyList.addAll((List<String>) map.get(convert.toNonAccentVietnamese(text.substring(0, 1))));
+          } catch (Exception e) {
+            log.error(e.getMessage());
+          }
+        }
+      }
+    }
+    return keyList;
+  }
+
+  @Override
   public boolean checkAutoSuggestExist() {
     return redisTemplate.hasKey(AUTO_SUGGEST_KEY);
   }

@@ -23,6 +23,8 @@ public interface ProductRedisService {
 
   List<Object> getKeys();
 
+  List<String> getKeysByText(String text);
+
   boolean checkAutoSuggestExist();
 
   void clearAutoSuggest();
