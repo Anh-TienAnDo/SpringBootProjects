@@ -1,6 +1,7 @@
 package com.ptit.graduation.service.product;
 
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import com.ptit.graduation.dto.response.product.ProductResponse;
@@ -21,9 +22,7 @@ public interface ProductRedisService {
 
   void setKeysAutoSuggest(List<String> keys, int timeout, TimeUnit unit);
 
-  List<Object> getKeys();
-
-  List<String> getKeysByText(String text);
+  Set<String> getAutosuggestByKey(String text);
 
   boolean checkAutoSuggestExist();
 

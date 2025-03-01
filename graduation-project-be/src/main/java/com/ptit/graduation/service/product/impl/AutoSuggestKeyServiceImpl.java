@@ -36,8 +36,8 @@ public class AutoSuggestKeyServiceImpl implements AutoSuggestKeyService {
       Set<String> suggestions = new HashSet<>();
 
       for (String text : generateTextCombinations(prefix)) {
-        List<String> keyList = productRedisService.getKeysByText(text);
-        suggestions.addAll(generateSuggestions(text, keyList));
+          Set<String> keySet = productRedisService.getAutosuggestByKey(text);
+        suggestions.addAll(generateSuggestions(text, keySet));
         if (suggestions.size() > 7) {
           return suggestions;
         }
@@ -65,7 +65,7 @@ public class AutoSuggestKeyServiceImpl implements AutoSuggestKeyService {
     return textCombinations;
   }
 
-  private Set<String> generateSuggestions(String text, List<String> keyList) {
+  private Set<String> generateSuggestions(String text, Set<String> keySet) {
     ConvertVietnameseToNormalText convert = new ConvertVietnameseToNormalText();
     Set<String> suggestions = new HashSet<>();
     int start = 0;
@@ -74,9 +74,12 @@ public class AutoSuggestKeyServiceImpl implements AutoSuggestKeyService {
       String prefixEnglishTemp = convert.slugify(prefixTemp);
       start++;
 
-      for (String key : keyList) {
+      for (String key : keySet) {
         String[] keyArr = key.split("&&");
         if (keyArr[0].startsWith(prefixTemp) || keyArr[1].startsWith(prefixEnglishTemp)) {
+          if (suggestions.size() > 7) {
+            return suggestions;
+          }
           suggestions.add(keyArr[0]);
         }
       }

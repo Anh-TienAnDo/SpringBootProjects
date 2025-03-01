@@ -108,4 +108,5 @@ public class ProductResponse implements Serializable{
   @JsonProperty("attribute")
   @Field(name = "attribute")
   private Object attribute;
+
 }

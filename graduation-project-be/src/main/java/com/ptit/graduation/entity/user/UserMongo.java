@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "user")
+@Document(collection = "users")
 public class UserMongo extends BaseMongoEntity {
   @Field(name = "username")
   private String username;

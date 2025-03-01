@@ -34,9 +34,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.Comparator;
 
 import static com.ptit.graduation.constants.GraduationProjectConstants.CommonConstants.NGRAM_COUNT;
 import static com.ptit.graduation.utils.Stopword.removeStopWords;
@@ -157,7 +156,7 @@ public class ProductMongoServiceImpl extends BaseServiceImpl<ProductMongo> imple
     String[] keywordArr = keyword.split(" ");
     for (int i = 0; i < keywordArr.length; i++) {
       String text = String.join(" ", Arrays.asList(keywordArr).subList(i, keywordArr.length));
-      List<String> keyList = productRedisService.getKeysByText(text);
+      Set<String> keySet = productRedisService.getAutosuggestByKey(text);
 
       int start = 0;
       while (start < text.length()) {
@@ -165,7 +164,7 @@ public class ProductMongoServiceImpl extends BaseServiceImpl<ProductMongo> imple
         String keywordEnglishTemp = convert.slugify(keywordTemp);
         start++;
 
-        for (String key : keyList) {
+        for (String key : keySet) {
           String[] keyArr = key.split("&&");
           if (keyArr[0].startsWith(keywordTemp) || keyArr[1].startsWith(keywordEnglishTemp)) {
             int len = keywordTemp.split(" ").length;

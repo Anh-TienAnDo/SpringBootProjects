@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.ptit.graduation.constants.GraduationProjectConstants.CommonConstants.PRODUCT_HASH_KEY;
 import static com.ptit.graduation.constants.GraduationProjectConstants.CommonConstants.AUTO_SUGGEST_KEY;
+import static com.ptit.graduation.constants.GraduationProjectConstants.CommonConstants.TIME_DAYS;
 
 @Slf4j
 @Service
@@ -36,6 +38,9 @@ public class ProductRedisServiceImpl implements ProductRedisService {
   @PostConstruct
   private void init() {
     hashOperations = redisTemplate.opsForHash();
+    if (!checkProductsExist()) {
+      redisTemplate.expire(PRODUCT_HASH_KEY, TIME_DAYS, TimeUnit.DAYS);
+    }
   }
 
   @Override
@@ -43,7 +48,7 @@ public class ProductRedisServiceImpl implements ProductRedisService {
     for (ProductResponse product : products) {
       save(product);
     }
-    redisTemplate.expire(PRODUCT_HASH_KEY, timeout, unit);
+    // redisTemplate.expire(PRODUCT_HASH_KEY, timeout, unit);
   }
 
   @Override
@@ -78,13 +83,13 @@ public class ProductRedisServiceImpl implements ProductRedisService {
   @Override
   public void setKeysAutoSuggest(List<String> keys, int timeout, TimeUnit unit) {
     // [{ "m": ["máy tính&&may-tinh", "mè&&me"] }, { "b": ["bánh&&banh"] }]
-    List<Map<String, List<String>>> mapkeys = new ArrayList<>();
+    List<Map<String, Set<String>>> mapkeys = new ArrayList<>();
     ConvertVietnameseToNormalText convert = new ConvertVietnameseToNormalText();
     for (int i = 0; i < keys.size(); i++) {
       String value = keys.get(i).trim().toLowerCase();
       String valueSlug = convert.slugify(value);
       String prefix = valueSlug.substring(0, 1);
-
+      
       boolean isExist = false;
       for (int j = 0; j < mapkeys.size(); j++) {
         if (mapkeys.get(j).containsKey(prefix)) {
@@ -94,40 +99,32 @@ public class ProductRedisServiceImpl implements ProductRedisService {
         }
       }
       if (!isExist) {
-        Map<String, List<String>> map = new HashMap<>();
-        List<String> list = new ArrayList<>();
-        list.add(value + "&&" + valueSlug);
-        map.put(prefix, list);
+        Map<String, Set<String>> map = new HashMap<>();
+        Set<String> set = new HashSet<>();
+        set.add(value + "&&" + valueSlug);
+        map.put(prefix, set);
         mapkeys.add(map);
       }
     }
-    redisTemplate.opsForList().rightPushAll(AUTO_SUGGEST_KEY, mapkeys.toArray());
-    redisTemplate.expire(AUTO_SUGGEST_KEY, timeout, unit);
-  }
-
-  @Override
-  public List<Object> getKeys() {
-    return redisTemplate.opsForList().range(AUTO_SUGGEST_KEY, 0, -1);
-  }
-
-  @Override
-  public List<String> getKeysByText(String text) {
-    ConvertVietnameseToNormalText convert = new ConvertVietnameseToNormalText();
-    List<String> keyList = new ArrayList<>();
-    for (Object obj : getKeys()) {
-      if (obj instanceof Map<?, ?>) {
-        Map<?, ?> map = (Map<?, ?>) obj;
-        if (map.containsKey(text.substring(0, 1))) {
-          try {
-            keyList.addAll((List<String>) map.get(convert.toNonAccentVietnamese(text.substring(0, 1))));
-          } catch (Exception e) {
-            log.error(e.getMessage());
-          }
-        }
+    for (Map<String, Set<String>> map : mapkeys) {
+      for (String key : map.keySet()) {
+        redisTemplate.opsForSet().add(String.format(AUTO_SUGGEST_KEY + ":%s", key), map.get(key).toArray());
+        redisTemplate.expire(String.format(AUTO_SUGGEST_KEY + ":%s", key), timeout, unit);
       }
     }
-    return keyList;
+    // redisTemplate.opsForList().rightPushAll(AUTO_SUGGEST_KEY, mapkeys.toArray());
+    // redisTemplate.expire(AUTO_SUGGEST_KEY, timeout, unit);
   }
+
+  @Override
+  public Set<String> getAutosuggestByKey(String text) {
+    ConvertVietnameseToNormalText convert = new ConvertVietnameseToNormalText();
+    String prefix = convert.slugify(text).substring(0, 1);
+    Set<String> result = new HashSet<>();
+    result.addAll((Set<String>) (Set<?>) redisTemplate.opsForSet().members(String.format(AUTO_SUGGEST_KEY + ":%s", prefix)));
+    return result;
+  }
+
 
   @Override
   public boolean checkAutoSuggestExist() {
@@ -136,7 +133,14 @@ public class ProductRedisServiceImpl implements ProductRedisService {
 
   @Override
   public void clearAutoSuggest() {
-    redisTemplate.delete(AUTO_SUGGEST_KEY);
+    // String s = "abcdefghijklmnopqrstuvwxyz";
+    // for (int i = 0; i < s.length(); i++) {
+    //   redisTemplate.delete(String.format(AUTO_SUGGEST_KEY + ":%s", s.charAt(i)));
+    // }
+    Set<String> keys = redisTemplate.keys(AUTO_SUGGEST_KEY + ":*");
+    if (keys != null) {
+      redisTemplate.delete(keys);
+    }
   }
 
   @Override

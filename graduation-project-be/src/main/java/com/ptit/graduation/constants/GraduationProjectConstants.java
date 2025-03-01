@@ -19,11 +19,13 @@ public class GraduationProjectConstants {
     public static final int NGRAM_COUNT = 3;
     public static final int FILTER_IN_MONGO = 1;
     public static final int FILTER_IN_ES = 2;
-    public static final int TIME_DAYS = 30;
-    public static final String PRODUCT_HASH_KEY = "Products";
+    public static final int TIME_DAYS = 7;
+    public static final String PRODUCT_HASH_KEY = "products";
     public static final String AUTO_SUGGEST_KEY = "AutoSuggestKey";
+    public static final String CART_KEY_PREFIX = "cart:";
     public static final List<String> LOCATIONS_POPULAR = List.of("Hà Nội", "TP Hồ Chí Minh", "Đà Nẵng", "Hải Phòng", "Nam Định", "Thái Bình", "Quảng Ninh", "Nghệ An", "Ninh Bình", "Thanh Hóa", "Thừa Thiên Huế");
     public static final int PRODUCTS_IN_REDIS = 1000;
+    public static final Integer ORDERS_LIMIT = 10;
 
     private CommonConstants() {
     }

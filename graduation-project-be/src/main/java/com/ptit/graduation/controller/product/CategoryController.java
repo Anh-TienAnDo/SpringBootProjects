@@ -26,7 +26,7 @@ import static com.ptit.graduation.constants.GraduationProjectConstants.MessageCo
 public class CategoryController {
   private final CategoryService categoryService;
 
-  @GetMapping("list")
+  @GetMapping("")
   public ResponseGeneral<List<CategoryMongo>> list() {
     log.info("(list) start");
 
