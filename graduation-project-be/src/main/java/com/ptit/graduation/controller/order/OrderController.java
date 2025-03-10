@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +19,7 @@ import com.ptit.graduation.service.order.OrderItemsService;
 import com.ptit.graduation.service.order.OrderService;
 
 @RestController
-@RequestMapping("/api/v1/orders")
+@RequestMapping("${api.prefix}/orders")
 public class OrderController {
     private final OrderService orderService;
     private final OrderItemsService orderItemsService;
@@ -28,10 +29,10 @@ public class OrderController {
         this.orderItemsService = orderItemsService;
     }
 
-    @GetMapping("")
+    @GetMapping()
     public ResponseGeneral<OrderResponse> getAllOrderByUserId(
-        @RequestParam() String time,
-        @RequestParam(defaultValue = "1") int page
+        @RequestParam(value = "createdAt", defaultValue = "2025-03-06") String time,
+        @RequestParam(value = "page", defaultValue = "1") int page
     ) {
         Timestamp timestamp = Timestamp.valueOf(time);
         return ResponseGeneral.ofSuccess(
@@ -39,7 +40,7 @@ public class OrderController {
     }
 
     @GetMapping("/get/{id}")
-    public ResponseGeneral<OrderItemsResponse> getOrderById(@RequestParam() Long id) {
+    public ResponseGeneral<OrderItemsResponse> getOrderById(@PathVariable Long id) {
         return ResponseGeneral.ofSuccess(
             "SUCCESS", orderItemsService.findAllByOrderId(id));
     }
@@ -52,7 +53,7 @@ public class OrderController {
     }
 
     @DeleteMapping("/order/{id}")
-    public ResponseGeneral<String> cancelOrder(@RequestParam() Long id) {
+    public ResponseGeneral<String> cancelOrder(@PathVariable Long id) {
         orderService.cancel(id);
         return ResponseGeneral.ofSuccess("SUCCESS", "Order canceled successfully");
     }

@@ -16,6 +16,8 @@ public interface ProductMongoService extends BaseService<ProductMongo> {
 
   ProductPageResponse getAll(int skip, int limit);
 
+  List<ProductResponse> convertProductMongoListToProductResponses(List<ProductMongo> product);
+
   ProductResponse convertProductMongoToProductResponse(ProductMongo product);
 
 }

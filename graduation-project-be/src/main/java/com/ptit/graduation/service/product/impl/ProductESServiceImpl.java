@@ -21,6 +21,9 @@ import com.ptit.graduation.service.product.ProductESService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -40,6 +43,7 @@ import static com.ptit.graduation.utils.VietnameseAccentMapper.convertToAccented
 public class ProductESServiceImpl implements ProductESService {
   // private final ProductESRepository repository;
   private final ElasticsearchClient elasticsearchClient;
+  private final ModelMapper modelMapper;
 
   @Override
   public void bulkInsert(List<ProductES> productESList) {
@@ -178,7 +182,7 @@ public class ProductESServiceImpl implements ProductESService {
           for (Hit<ProductES> hit : response.hits().hits()) {
             products.add(hit.source());
           }
-          return ProductPageResponse.of(this.toDTO(products), countProduct);
+          return ProductPageResponse.of(this.productsToDTO(products), countProduct);
         }
       }
       
@@ -201,10 +205,10 @@ public class ProductESServiceImpl implements ProductESService {
           for (Hit<ProductES> hit : response.hits().hits()) {
             products.add(hit.source());
           }
-          return ProductPageResponse.of(this.toDTO(products), countProduct);
+          return ProductPageResponse.of(this.productsToDTO(products), countProduct);
         }
       }
-      return ProductPageResponse.of(this.toDTO(products), countProduct);
+      return ProductPageResponse.of(this.productsToDTO(products), countProduct);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -297,35 +301,18 @@ public class ProductESServiceImpl implements ProductESService {
     }));
   }
 
-  private List<ProductResponse> toDTO(List<ProductES> products) {
+  @Override
+  public List<ProductResponse> productsToDTO(List<ProductES> products) {
     List<ProductResponse> productDTOs = new ArrayList<>();
 
     for (ProductES productES : products) {
-      productDTOs.add(
-          ProductResponse.builder()
-              .id(productES.getId())
-              .name(productES.getName())
-              .categoryName(productES.getCategoryName())
-              .brandName(productES.getBrandName())
-              .slug(productES.getSlug())
-              .importPrice(productES.getImportPrice())
-              .sellingPrice(productES.getSellingPrice())
-              .image(productES.getImage())
-              .description(productES.getDescription())
-              .review(productES.getReview())
-              .location(productES.getLocation())
-              .locationId(productES.getLocationId())
-              .brandName(productES.getBrandName())
-              .brandId(productES.getBrandId())
-              .categoryName(productES.getCategoryName())
-              .categoryId(productES.getCategoryId())
-              .quantity(productES.getQuantity())
-              .soldQuantity(productES.getSoldQuantity())
-              .attribute(productES.getAttribute())
-              .isSale(productES.isSale())
-              .build());
+      productDTOs.add(productToDTO(productES));
     }
-
     return productDTOs;
+  }
+
+  @Override
+  public ProductResponse productToDTO(ProductES product) {
+    return modelMapper.map(product, ProductResponse.class);
   }
 }

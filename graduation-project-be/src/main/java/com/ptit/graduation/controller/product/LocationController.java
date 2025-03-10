@@ -22,7 +22,7 @@ import static com.ptit.graduation.constants.GraduationProjectConstants.MessageCo
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/locations")
+@RequestMapping("${api.prefix}/locations")
 public class LocationController {
   private final LocationService locationService;
 

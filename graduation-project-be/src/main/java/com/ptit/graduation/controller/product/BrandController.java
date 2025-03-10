@@ -21,7 +21,7 @@ import static com.ptit.graduation.constants.GraduationProjectConstants.MessageCo
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/brands")
+@RequestMapping("${api.prefix}/brands")
 @RequiredArgsConstructor
 public class BrandController {
   private final BrandService brandService;

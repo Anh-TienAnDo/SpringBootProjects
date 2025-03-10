@@ -39,3 +39,7 @@ application:
 logging:
   level:
     org.springframework.data.mongodb.core: DEBUG
+
+api:
+  prefix: /api/v1
+  version: 1.0.0

@@ -15,7 +15,7 @@ import static com.ptit.graduation.constants.GraduationProjectConstants.MessageCo
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/products")
+@RequestMapping("${api.prefix}/products")
 public class ProductController {
   private final ProductMongoService productMongoService;
   private final ProductFacadeService productFacadeService;

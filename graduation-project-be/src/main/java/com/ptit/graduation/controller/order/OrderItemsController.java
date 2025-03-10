@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/order-items")
+@RequestMapping("${api.prefix}/order-items")
 public class OrderItemsController {
 
     @Autowired
     private OrderItemsServiceImpl orderItemsService;
 
     @GetMapping
-    public ResponseGeneral<OrderItemsResponse> getOrderItemsByOrderId(@RequestParam Long orderId) {
+    public ResponseGeneral<OrderItemsResponse> getOrderItemsByOrderId(@RequestParam(value = "orderId") Long orderId) {
         return ResponseGeneral.ofSuccess(
             "SUCCESS", orderItemsService.findAllByOrderId(orderId));
     }

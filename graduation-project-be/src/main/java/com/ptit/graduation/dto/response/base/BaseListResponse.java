@@ -1,4 +1,4 @@
-package com.ptit.graduation.dto.response.product;
+package com.ptit.graduation.dto.response.base;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor(staticName = "of")
 @NoArgsConstructor
-public class ProductPageResponse {
-    private List<ProductResponse> products;
+public class BaseListResponse<T> {
+    private List<T> data;
     private long total;
 }

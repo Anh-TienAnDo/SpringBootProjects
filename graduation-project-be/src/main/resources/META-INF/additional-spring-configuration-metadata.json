@@ -23,5 +23,15 @@
     "name": "application.elastic.scheme",
     "type": "java.lang.String",
     "description": "A description for 'application.elastic.scheme'"
+  },
+  {
+    "name": "api.prefix",
+    "type": "java.lang.String",
+    "description": "A description for 'api.prefix'"
+  },
+  {
+    "name": "api.version",
+    "type": "java.lang.String",
+    "description": "A description for 'api.version'"
   }
 ]}

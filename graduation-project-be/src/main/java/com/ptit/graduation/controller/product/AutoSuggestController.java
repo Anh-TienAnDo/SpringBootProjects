@@ -19,7 +19,7 @@ import static com.ptit.graduation.constants.GraduationProjectConstants.MessageCo
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/auto-suggest")
+@RequestMapping("${api.prefix}/auto-suggest")
 public class AutoSuggestController {
   private final AutoSuggestKeyService autoSuggestKeyService;
 

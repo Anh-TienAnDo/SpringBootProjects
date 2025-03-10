@@ -22,7 +22,7 @@ import static com.ptit.graduation.constants.GraduationProjectConstants.MessageCo
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/categories")
+@RequestMapping("${api.prefix}/categories")
 public class CategoryController {
   private final CategoryService categoryService;
 

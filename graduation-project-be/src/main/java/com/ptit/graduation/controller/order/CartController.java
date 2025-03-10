@@ -21,25 +21,25 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/cart")
+@RequestMapping("${api.prefix}/cart")
 public class CartController {
     @Autowired
     private CartService cartService;
 
     @GetMapping()
-    public ResponseGeneral<CartResponse> list(){
+    public ResponseGeneral<CartResponse> list() {
         log.info("carts");
         String userId = "anh";
         return ResponseGeneral.ofSuccess(SUCCESS, cartService.getCartItems(userId));
     }
 
     @GetMapping("/add")
-    public RedirectView add(
-            @RequestParam String productId, @RequestParam int quantity, @RequestParam String returnUrl) {
+    public ResponseGeneral<String> add(
+            @RequestParam(value = "productId") String productId, @RequestParam(value = "quantity") int quantity) {
         log.info("add cart");
         String userId = "anh";
         cartService.addItemToCart(userId, productId, quantity);
-        return new RedirectView(returnUrl);
+        return ResponseGeneral.ofSuccess(SUCCESS, "Add to cart successfully");
     }
 
     @DeleteMapping("/remove/{productId}")
@@ -53,7 +53,7 @@ public class CartController {
 
     @GetMapping("/increase")
     public RedirectView increase(
-            @RequestParam String productId) {
+            @RequestParam(value = "productId") String productId) {
         log.info("increase cart");
         String userId = "anh";
         cartService.increaseItemQuantity(userId, productId);
@@ -62,7 +62,7 @@ public class CartController {
 
     @GetMapping("/decrease")
     public RedirectView decrease(
-            @RequestParam String productId) {
+            @RequestParam(value = "productId") String productId) {
         log.info("decrease cart");
         String userId = "anh";
         cartService.decreaseItemQuantity(userId, productId);

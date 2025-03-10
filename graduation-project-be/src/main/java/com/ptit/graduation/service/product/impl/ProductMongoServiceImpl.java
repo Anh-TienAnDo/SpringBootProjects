@@ -22,6 +22,7 @@ import com.ptit.graduation.utils.VietnameseAccentMapper;
 
 import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -51,6 +52,8 @@ public class ProductMongoServiceImpl extends BaseServiceImpl<ProductMongo> imple
   private LocationService locationService;
   @Autowired
   private RedisService redisService;
+  @Autowired
+  private ModelMapper modelMapper;
 
   public ProductMongoServiceImpl(ProductMongoRepository repository, MongoTemplate mongoTemplate) {
     super(repository);
@@ -194,26 +197,35 @@ public class ProductMongoServiceImpl extends BaseServiceImpl<ProductMongo> imple
   }
 
   @Override
+  public List<ProductResponse> convertProductMongoListToProductResponses(List<ProductMongo> products) {
+    return products.stream()
+        .map(product -> convertProductMongoToProductResponse(product))
+        .collect(Collectors.toList());
+  }
+
+  @Override
   public ProductResponse convertProductMongoToProductResponse(ProductMongo product) {
-    return ProductResponse.builder()
-        .id(product.getId())
-        .name(product.getName())
-        .slug(product.getSlug())
-        .importPrice(product.getImportPrice())
-        .sellingPrice(product.getSellingPrice())
-        .image(product.getImage())
-        .isSale(product.getIsSale())
-        .description(product.getDescription())
-        .review(product.getReview())
-        .location(product.getLocation())
-        .locationId(product.getLocationId())
-        .brandName(product.getBrandName())
-        .brandId(product.getBrandId())
-        .categoryName(product.getCategoryName())
-        .categoryId(product.getCategoryId())
-        .quantity(product.getQuantity())
-        .soldQuantity(product.getSoldQuantity())
-        .build();
+    ProductResponse productResponse = modelMapper.map(product, ProductResponse.class);
+    return productResponse;
+    // return ProductResponse.builder()
+    //     .id(product.getId())
+    //     .name(product.getName())
+    //     .slug(product.getSlug())
+    //     .importPrice(product.getImportPrice())
+    //     .sellingPrice(product.getSellingPrice())
+    //     .image(product.getImage())
+    //     .isSale(product.getIsSale())
+    //     .description(product.getDescription())
+    //     .review(product.getReview())
+    //     .location(product.getLocation())
+    //     .locationId(product.getLocationId())
+    //     .brandName(product.getBrandName())
+    //     .brandId(product.getBrandId())
+    //     .categoryName(product.getCategoryName())
+    //     .categoryId(product.getCategoryId())
+    //     .quantity(product.getQuantity())
+    //     .soldQuantity(product.getSoldQuantity())
+    //     .build();
   }
 
 

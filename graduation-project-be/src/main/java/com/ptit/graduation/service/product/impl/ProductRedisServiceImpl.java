@@ -89,7 +89,7 @@ public class ProductRedisServiceImpl implements ProductRedisService {
       String value = keys.get(i).trim().toLowerCase();
       String valueSlug = convert.slugify(value);
       String prefix = valueSlug.substring(0, 1);
-      
+
       boolean isExist = false;
       for (int j = 0; j < mapkeys.size(); j++) {
         if (mapkeys.get(j).containsKey(prefix)) {
@@ -121,10 +121,10 @@ public class ProductRedisServiceImpl implements ProductRedisService {
     ConvertVietnameseToNormalText convert = new ConvertVietnameseToNormalText();
     String prefix = convert.slugify(text).substring(0, 1);
     Set<String> result = new HashSet<>();
-    result.addAll((Set<String>) (Set<?>) redisTemplate.opsForSet().members(String.format(AUTO_SUGGEST_KEY + ":%s", prefix)));
+    result.addAll(
+        (Set<String>) (Set<?>) redisTemplate.opsForSet().members(String.format(AUTO_SUGGEST_KEY + ":%s", prefix)));
     return result;
   }
-
 
   @Override
   public boolean checkAutoSuggestExist() {
@@ -135,7 +135,7 @@ public class ProductRedisServiceImpl implements ProductRedisService {
   public void clearAutoSuggest() {
     // String s = "abcdefghijklmnopqrstuvwxyz";
     // for (int i = 0; i < s.length(); i++) {
-    //   redisTemplate.delete(String.format(AUTO_SUGGEST_KEY + ":%s", s.charAt(i)));
+    // redisTemplate.delete(String.format(AUTO_SUGGEST_KEY + ":%s", s.charAt(i)));
     // }
     Set<String> keys = redisTemplate.keys(AUTO_SUGGEST_KEY + ":*");
     if (keys != null) {
